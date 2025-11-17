@@ -14,7 +14,31 @@
 
 using namespace std;
 
-void Solve() {}
+void Solve() {
+  int n;
+  cin >> n;
+  vi v(n);
+  vi z;
+  int k = 0;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+    int x = v[i];
+    if (x == 0) {
+      k++;
+    } else {
+      z.push_back(k);
+      k = 0;
+    }
+  }
+  if (k > 0) {
+    z.push_back(k);
+  }
+  if (sz(z) == 0) {
+    cout << 0 << endl;
+  } else {
+    cout << *max_element(z.begin(), z.end()) << endl;
+  }
+}
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);

@@ -1,4 +1,4 @@
-// Url -
+// Url -https://codeforces.com/problemset/problem/1980/A
 // codeforces
 #include <bits/stdc++.h>
 
@@ -14,7 +14,25 @@
 
 using namespace std;
 
-void Solve() {}
+void Solve() {
+  int n, m;
+  cin >> n >> m;
+  int count = 0;
+  map<char, int> v;
+  for (int i = 0; i < n; i++) {
+    char a;
+    cin >> a;
+    v[a]++;
+  }
+
+  string levels = "ABCDEFG";
+  for (char l : levels) {
+    if (v[l] < m) {
+      count += (m - v[l]);
+    }
+  }
+  cout << count << endl;
+}
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);

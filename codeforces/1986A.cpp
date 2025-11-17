@@ -1,6 +1,7 @@
 // Url -
 // codeforces
 #include <bits/stdc++.h>
+#include <cmath>
 
 #define int long long
 #define sz(x) (int)x.size()
@@ -14,7 +15,20 @@
 
 using namespace std;
 
-void Solve() {}
+void Solve() {
+  int x, y, z;
+  cin >> x >> y >> z;
+  int sum = 11;
+  int a = 0;
+  for (int i = 0; i <= 10; i++) {
+    int tsum = abs(i - x) + abs(i - y) + abs(i - z);
+    if (tsum < sum) {
+      sum = tsum;
+      a = i;
+    }
+  }
+  cout << sum << endl;
+}
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);

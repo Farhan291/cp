@@ -14,13 +14,30 @@
 
 using namespace std;
 
-void Solve() {}
+void Solve() {
+  int n;
+  cin >> n;
+  vector<pii> v(n);
+  for (int i = 0; i < n; i++) {
+    int w, j;
+    cin >> w >> j;
+    v[i] = {w, j};
+  }
+  sort(all(v));
+  int t = 0;
+  int r = 0;
+  for (int i = 0; i < n; i++) {
+    t += v[i].first;
+    r += v[i].second - t;
+  }
+  cout << r << endl;
+}
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Solve();
 }
