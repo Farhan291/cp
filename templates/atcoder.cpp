@@ -5,6 +5,7 @@
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
+#define vi vector<int>
 #define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
@@ -19,7 +20,7 @@ signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Solve();
 }
