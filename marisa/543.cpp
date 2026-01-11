@@ -1,5 +1,6 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
-// codeforces
+// Url: https://marisaoj.com/problem/543
+// Start: 01-01-2026 20:12
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,45 +51,25 @@ struct _debug {
 #define debug(x...)
 #endif
 
+void bs(int n, string s) {
+  if (sz(s) == n) {
+    cout << s << nl;
+    return;
+  }
+  bs(n, s + "0");
+  bs(n, s + "1");
+}
 void Mizuhara() {
   int n;
   cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
-    } else {
-      v.pb(1);
-    }
-  }
-  int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
-  for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
-      }
-    }
-    debug(ans, sum);
-  }
-  cout << abs(sum + ans) << nl;
+  bs(n, "");
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

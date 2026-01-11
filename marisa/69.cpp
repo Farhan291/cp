@@ -1,5 +1,6 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
-// codeforces
+// Url:https://marisaoj.com/problem/69
+// Start: 01-01-2026 23:06
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -51,44 +52,31 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
+  int n, q;
+  cin >> n >> q;
+  vector<pii> v;
+  vector<pii> v1;
+  vi a(n);
+  for (int i = 0; i < q; i++) {
+    int x, y;
+    cin >> x >> y;
+    v.pb({x, y});
+  }
+  sort(all(v));
+  for (int i = 1; i < n; i++) {
+    if (v[i].first > v[i - 1].second) {
+      v1.pb(v[i - 1]);
     } else {
-      v.pb(1);
     }
   }
-  int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
-  for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
-      }
-    }
-    debug(ans, sum);
-  }
-  cout << abs(sum + ans) << nl;
+  debug(v);
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

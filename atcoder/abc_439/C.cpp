@@ -1,18 +1,24 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
-// codeforces
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
+// Start:
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -53,42 +59,29 @@ struct _debug {
 void Mizuhara() {
   int n;
   cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
-    } else {
-      v.pb(1);
-    }
-  }
-  int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
-  for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
+  vector<pii> v;
+  vi ans;
+  for (int i = 1; i < pow(n, 0.5); i++) {
+    for (int j = i + 1; j < pow(n, 0.5); j++) {
+      if (pow(j, 2) + pow(i, 2) <= n) {
+        v.pb({i, j});
+        ans.pb(pow(j, 2) + pow(i, 2));
       }
     }
-    debug(ans, sum);
   }
-  cout << abs(sum + ans) << nl;
+  sort(all(ans));
+  cout << sz(ans) << nl;
+  for (auto i : ans) {
+    cout << i << " ";
+  }
+  debug(v);
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

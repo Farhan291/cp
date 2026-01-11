@@ -1,4 +1,4 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -53,35 +53,39 @@ struct _debug {
 void Mizuhara() {
   int n;
   cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
-    } else {
-      v.pb(1);
-    }
-  }
-  int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
+  int k;
+  cin >> k;
+  vi v(n);
   for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
-      }
-    }
-    debug(ans, sum);
+    cin >> v[i];
   }
-  cout << abs(sum + ans) << nl;
+  int best = 0;
+  int bestl = 0;
+  int bestr = 0;
+  for (int l = 0; l + k - 1 < n; l++) {
+    int r = l + k - 1;
+    int i = 0;
+    int mex = 0;
+    while (1) {
+      auto a = find(v.begin() + l, v.begin() + r + 1, i);
+      if (a == v.begin() + r + 1) {
+        mex = i;
+        if (mex > best) {
+          best = mex;
+          bestl = l;
+          bestr = r;
+        }
+        break;
+      }
+      i++;
+    }
+    debug(best, i, bestl, bestr);
+  }
+  auto mini = min_element(v.begin() + bestl, v.begin() + bestr + 1);
+  debug(v);
+  v.erase(mini);
+  debug(v);
+  cerr << "end" << nl;
 }
 
 signed main() {

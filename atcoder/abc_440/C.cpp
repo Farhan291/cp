@@ -1,18 +1,24 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
-// codeforces
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
+// Start:
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,38 +56,43 @@ struct _debug {
 #define debug(x...)
 #endif
 
-void Mizuhara() {
-  int n;
-  cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
-    } else {
-      v.pb(1);
-    }
-  }
+bool check(int m, vi &v, int w) {
   int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
-  for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
-      }
+  for (int j = 0; j < sz(v); j++) {
+    if ((4 + j) % 2 * w < w) {
+      sum++;
     }
-    debug(ans, sum);
+    if (sum >= m) {
+      cerr << "true blo";
+      debug(m);
+      return true;
+    }
   }
-  cout << abs(sum + ans) << nl;
+  debug(m);
+  return false;
+}
+void Mizuhara() {
+  int n, w;
+  cin >> n >> w;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  int l = 0;
+  int h = 2e5;
+  int ans = 0;
+  while (l < h) {
+    int m = l + (h - l) / 2;
+    if (check(m, v, w)) {
+      h = m - 1;
+      ans = m;
+      debug(m, l, h, ans);
+    } else {
+      l = m + 1;
+    }
+  }
+  debug(l, ans, h);
+  cout << ans << nl;
 }
 
 signed main() {

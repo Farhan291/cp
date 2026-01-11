@@ -1,4 +1,4 @@
-// Url -https://codeforces.com/problemset/problem/1919/B
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -53,35 +53,15 @@ struct _debug {
 void Mizuhara() {
   int n;
   cin >> n;
-  string s;
-  cin >> s;
-  vi v;
-  for (auto i : s) {
-    if (i == '-') {
-      v.pb(-1);
-    } else {
-      v.pb(1);
-    }
-  }
-  int sum = 0;
-  int ans = 0;
-  vector<vector<int>> v1;
+  vi v(n);
   for (int i = 0; i < n; i++) {
-    if (sum + v[i] < 0) {
-      sum += v[i];
-    } else if (sum + v[i] == 0) {
-      sum = 0;
-    } else {
-      if (sum + v[i] == 1) {
-        sum += v[i];
-      } else if (sum + v[i] == 2) {
-        ans += 2;
-        sum = 0;
-      }
-    }
-    debug(ans, sum);
+    cin >> v[i];
   }
-  cout << abs(sum + ans) << nl;
+  if (v[0] != 1 && v[n - 1] != 1) {
+    cout << "Bob" << nl;
+  } else {
+    cout << "Alice" << nl;
+  }
 }
 
 signed main() {
