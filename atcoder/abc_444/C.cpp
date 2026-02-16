@@ -1,19 +1,24 @@
-// https://cses.fi/problemset/task/1090
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -52,31 +57,52 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
+  int n;
+  cin >> n;
   vi v(n);
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
   sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  int mx = v.back();
+  int x = n - 2;
+  while (x != -1 && v[x] == mx)
+    x--;
+  {
+    int i = 0;
+    int j = x;
+    bool ok = true;
+    if ((x + 1) % 2 != 0)
+      ok = false;
+    while (i < j) {
+      if (v[i] + v[j] == mx) {
+        i++;
+        j--;
+      } else {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) {
+      cout << mx << " ";
+    }
+    int z = 0;
+    int k = n - 1;
+    int check = v[n - 1] + v[0];
+    bool check2 = (n % 2 == 0);
+
+    while (z < k) {
+      if (v[z] + v[k] != check) {
+        check2 = false;
+        break;
+      }
+      z++;
+      k--;
+    }
+    if (check2) {
+      cout << mx + v[0] << nl;
     }
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
 }
 
 signed main() {

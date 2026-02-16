@@ -1,5 +1,5 @@
 // Url:https://marisaoj.com/problem/69
-// Start: 01-01-2026 23:06
+// Start: 08-02-2026 23:06
 // mintemplate
 #include <bits/stdc++.h>
 
@@ -55,21 +55,24 @@ void Mizuhara() {
   int n, q;
   cin >> n >> q;
   vector<pii> v;
-  vector<pii> v1;
-  vi a(n);
   for (int i = 0; i < q; i++) {
     int x, y;
     cin >> x >> y;
     v.pb({x, y});
   }
-  sort(all(v));
-  for (int i = 1; i < n; i++) {
-    if (v[i].first > v[i - 1].second) {
-      v1.pb(v[i - 1]);
-    } else {
-    }
+  vi v1(n + 2, 0);
+  for (auto &i : v) {
+    v1[i.first] += 1;
+    v1[i.second + 1] -= 1;
   }
-  debug(v);
+  debug(v, v1);
+  vi pref(n + 2, 0);
+  for (int i = 1; i < n + 2; i++) {
+    pref[i] = pref[i - 1] + v1[i - 1];
+  }
+  for (int i = 2; i < n + 2; i++) {
+    cout << pref[i] << " ";
+  }
 }
 
 signed main() {

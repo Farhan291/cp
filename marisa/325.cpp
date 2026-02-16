@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://marisaoj.com/problem/325
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -52,31 +52,20 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
+  int n;
+  cin >> n;
+  vi v;
+  for (int i = 1; i <= n; i++) {
+    v.pb(i);
+    cout << i << " ";
   }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  cout << nl;
+  while (next_permutation(all(v))) {
+    for (auto &i : v) {
+      cout << i << " ";
     }
+    cout << nl;
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
 }
 
 signed main() {

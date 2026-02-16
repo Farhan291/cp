@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://cses.fi/problemset/task/1084
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -52,33 +52,34 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
+  int n, m, k;
+  cin >> n >> m >> k;
   vi v(n);
+  vi v1(m);
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
+  for (int i = 0; i < m; i++) {
+    cin >> v1[i];
+  }
   sort(all(v));
-  int i = 0;
-  int j = n - 1;
+  sort(all(v1));
+  int j = 0;
   int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
+  int i = 0;
+  while (i < n && j < m) {
+    if (v[i] - k > v1[j]) {
+      j++;
+    } else if (v1[j] > v[i] + k) {
       i++;
-      j--;
     } else {
       cnt++;
-      j--;
+      i++;
+      j++;
     }
-  }
-  if (i == j) {
-    cnt++;
   }
   cout << cnt << nl;
 }
-
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);

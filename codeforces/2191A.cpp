@@ -1,6 +1,5 @@
-// https://cses.fi/problemset/task/1090
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/2191/problem/array
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -52,38 +51,35 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
+  int n;
+  cin >> n;
+
+  vector<int> a(n);
+  unordered_map<int, int> pos;
+
   for (int i = 0; i < n; i++) {
-    cin >> v[i];
+    cin >> a[i];
+    pos[a[i]] = i;
   }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+
+  vector<int> sorted = a;
+  sort(sorted.begin(), sorted.end());
+
+  for (int i = 0; i < n - 1; i++) {
+    if ((pos[sorted[i]] % 2) == (pos[sorted[i + 1]] % 2)) {
+      cout << "NO\n";
+      return;
     }
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+
+  cout << "YES\n";
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

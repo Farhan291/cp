@@ -1,4 +1,5 @@
 // Url -
+// upsolve -10/02/2026
 // codeforces
 #include <bits/stdc++.h>
 
@@ -59,33 +60,19 @@ void Mizuhara() {
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
-  int best = 0;
-  int bestl = 0;
-  int bestr = 0;
-  for (int l = 0; l + k - 1 < n; l++) {
-    int r = l + k - 1;
-    int i = 0;
-    int mex = 0;
-    while (1) {
-      auto a = find(v.begin() + l, v.begin() + r + 1, i);
-      if (a == v.begin() + r + 1) {
-        mex = i;
-        if (mex > best) {
-          best = mex;
-          bestl = l;
-          bestr = r;
-        }
-        break;
-      }
-      i++;
+  int mex = n;
+  for (int i = 0; i < n; i++) {
+    while (v[i] >= 0 && v[i] < n && v[v[i]] != v[i]) {
+      swap(v[v[i]], v[i]);
     }
-    debug(best, i, bestl, bestr);
   }
-  auto mini = min_element(v.begin() + bestl, v.begin() + bestr + 1);
-  debug(v);
-  v.erase(mini);
-  debug(v);
-  cerr << "end" << nl;
+  for (int i = 0; i < n; i++) {
+    if (v[i] != i) {
+      mex = i;
+      break;
+    }
+  }
+  cout << min(mex, k - 1) << nl;
 }
 
 signed main() {

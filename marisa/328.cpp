@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://marisaoj.com/problem/328
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,33 +50,27 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
+  int n;
+  cin >> n;
+  vector<pii> v;
   for (int i = 0; i < n; i++) {
-    cin >> v[i];
+    int x, y;
+    cin >> x >> y;
+    v.pb({x, y});
   }
   sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  int ans = LLONG_MAX;
+  do {
+    int ft = 0;
+    int lt = 0;
+    for (auto &i : v) {
+      ft += i.first;
+      lt = max(lt, ft) + i.second;
     }
-  }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+    ans = min(lt, ans);
+  } while (next_permutation(all(v)));
+  cout << ans << nl;
 }
 
 signed main() {

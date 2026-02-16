@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://cses.fi/problemset/task/3222
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -52,31 +52,32 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
+  int n, k;
+  cin >> n >> k;
   vi v(n);
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
-  sort(all(v));
+  vi ans;
+  map<int, int> m;
   int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
+  for (int j = 0; j < n; j++) {
+    m[v[j]]++;
+    if (j - i + 1 < k) {
+      continue;
     } else {
-      cnt++;
-      j--;
+      ans.pb(sz(m));
+      if (m[v[i]] == 1) {
+        m.erase(v[i]);
+      } else {
+        m[v[i]]--;
+      }
+      i++;
     }
   }
-  if (i == j) {
-    cnt++;
+  for (auto i : ans) {
+    cout << i << " ";
   }
-  cout << cnt << nl;
 }
 
 signed main() {

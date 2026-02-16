@@ -1,6 +1,5 @@
-// https://cses.fi/problemset/task/1090
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -52,38 +51,18 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
-    }
-  }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+  int n, w;
+  cin >> n >> w;
+  int a = n / w;
+  int b = n % w;
+  cout << (w - 1) * a + b << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

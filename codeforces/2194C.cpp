@@ -1,6 +1,5 @@
-// https://cses.fi/problemset/task/1090
-// Start:
-// mintemplate
+// Url - https://codeforces.com/problemset/problem/2193/C
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -52,38 +51,47 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
+  int n, q;
+  cin >> n >> q;
+  vi a(n);
+  vi b(n);
   for (int i = 0; i < n; i++) {
-    cin >> v[i];
+    cin >> a[i];
   }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  for (int i = 0; i < n; i++) {
+    cin >> b[i];
+  }
+  vector<pii> v;
+  for (int i = 0; i < q; i++) {
+    int x, y;
+    cin >> x >> y;
+    v.pb({x, y});
+  }
+  for (int i = n - 1; i >= 0; i--) {
+    if (a[i] < b[i]) {
+      a[i] = b[i];
+    }
+    if (i != 0) {
+      if (a[i - 1] < a[i]) {
+        a[i - 1] = a[i];
+      }
     }
   }
-  if (i == j) {
-    cnt++;
+  vi pref(n + 1, 0);
+  for (int i = 1; i < n + 1; i++) {
+    pref[i] = pref[i - 1] + a[i - 1];
   }
-  cout << cnt << nl;
+  for (auto &i : v) {
+    cout << pref[i.second] - pref[i.first - 1] << " ";
+  }
+  cout << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

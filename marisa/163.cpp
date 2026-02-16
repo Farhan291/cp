@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://marisaoj.com/problem/163
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,33 +50,59 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+constexpr int MOD = 1e9 + 7;
+constexpr int MAXN = 1e6;
+template <typename T, int MOD, int MAXN> struct Combinator {
+  vector<T> fact, invfact;
 
-void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
+  static T binpow(T a, long long b) {
+    T ans = 1;
+    while (b) {
+      if (b & 1)
+        ans = (ans * a) % MOD;
+      a = (a * a) % MOD;
+      b >>= 1;
+    }
+    return ans;
   }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  Combinator() {
+    fact.resize(MAXN + 1);
+    invfact.resize(MAXN + 1);
+    fact[0] = 1;
+    for (int i = 1; i <= MAXN; i++) {
+      fact[i] = fact[i - 1] * i % MOD;
+    }
+    invfact[MAXN] = binpow(fact[MAXN], MOD - 2);
+    for (int i = MAXN; i > 0; i--) {
+      invfact[i - 1] = invfact[i] * i % MOD;
     }
   }
-  if (i == j) {
-    cnt++;
+  T ncr(T a, T b) {
+    if (a < 0 || b > a)
+      return 0;
+    return ((fact[a] * invfact[b]) % MOD * invfact[a - b]) % MOD;
   }
-  cout << cnt << nl;
+  T dearrangement(T a) {
+    if (a < 0)
+      return 0;
+    T ans = 1;
+    for (int k = 1; k <= a; k++) {
+      if (k & 1) {
+        ans = (ans - invfact[k] + MOD) % MOD;
+      } else {
+        ans = (ans + invfact[k]) % MOD;
+      }
+    }
+    return ((fact[a] * ans) % MOD);
+  }
+};
+Combinator<long long, MOD, MAXN> c;
+
+void Mizuhara() {
+  int a, b, n;
+  cin >> a >> b >> n;
+  int ans = (c.ncr(a, n) * c.ncr(b, n)) % MOD;
+  cout << ans << nl;
 }
 
 signed main() {

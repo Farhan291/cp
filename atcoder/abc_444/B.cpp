@@ -1,19 +1,24 @@
-// https://cses.fi/problemset/task/1090
+// Problem: B
+// Contest: abc_444
+// URL:
+// Time Limit: 100min
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -51,30 +56,25 @@ struct _debug {
 #define debug(x...)
 #endif
 
+bool sum(int n, int k) {
+  int temp = n;
+  int sum = 0;
+  while (temp) {
+    int d = temp % 10;
+    sum += d;
+    temp /= 10;
+  }
+  return sum == k;
+}
+
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
+  int n, k;
+  cin >> n >> k;
   int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
+  for (int i = 1; i <= n; i++) {
+    if (sum(i, k)) {
       cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
     }
-  }
-  if (i == j) {
-    cnt++;
   }
   cout << cnt << nl;
 }

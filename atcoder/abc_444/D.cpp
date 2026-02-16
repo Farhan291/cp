@@ -1,19 +1,24 @@
-// https://cses.fi/problemset/task/1090
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -52,31 +57,20 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
+  int n;
+  cin >> n;
   vi v(n);
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
-    }
+  int m = 1e10;
+  vector<int> p(1e10);
+  for (int i = 0; i < n; i++) {
+    p[m] += 1;
+    p[m - v[i] - 1] -= 1;
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+  vi pref(1e+10 + 2);
+  for (int i = 0;)
 }
 
 signed main() {

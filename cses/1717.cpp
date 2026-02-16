@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1090
+// Url: https://cses.fi/problemset/task/1717
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,39 +50,50 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+int MAXN = 1e6;
+int MOD = 1e9 + 7;
+vector<int> fact(MAXN + 1);
+vector<int> invfact(MAXN + 1);
+void precompute() {
+  fact[0] = 1;
+  for (int i = 1; i <= MAXN; i++) {
+    fact[i] = fact[i - 1] * i % MOD;
+  }
+  int b = MOD - 2;
+  int ans = 1;
+  int a = fact[MAXN];
+  a %= MOD;
+  while (b) {
+    if (b & 1)
+      ans = (a * ans) % MOD;
+    a = (a * a) % MOD;
+    b >>= 1;
+  }
+  invfact[MAXN] = ans;
+  for (int i = MAXN; i > 0; i--) {
+    invfact[i - 1] = invfact[i] * i % MOD;
+  }
+}
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
+  int n;
+  cin >> n;
+  int ans = 1;
+  for (int k = 1; k <= n; k++) {
+    if (k & 1) {
+      ans = (ans - invfact[k] + MOD) % MOD;
     } else {
-      cnt++;
-      j--;
+      ans = (ans + invfact[k]) % MOD;
     }
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+  cout << ((fact[n] * ans) % MOD) << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
+  precompute();
   // cin >> t;
   while (t--)
     Mizuhara();

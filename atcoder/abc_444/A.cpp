@@ -1,19 +1,24 @@
-// https://cses.fi/problemset/task/1090
-// Start:
-// mintemplate
+// Problem: A
+// Contest: abc_444
+// URL:
+// Time Limit: 100 min
+// Start: 17:30
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -52,31 +57,21 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n, x;
-  cin >> n >> x;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  sort(all(v));
-  int i = 0;
-  int j = n - 1;
-  int cnt = 0;
-  debug(v, i, j, cnt);
-  while (i < j) {
-    if (v[i] + v[j] <= x) {
-      cnt++;
-      i++;
-      j--;
-    } else {
-      cnt++;
-      j--;
+  int n;
+  cin >> n;
+  int temp = n;
+  int prev = n % 10;
+  while (temp > 0) {
+    int d = temp % 10;
+    temp /= 10;
+    if (d != prev) {
+      cout << "No";
+      return;
     }
+    prev = d;
+    debug(prev, d);
   }
-  if (i == j) {
-    cnt++;
-  }
-  cout << cnt << nl;
+  cout << "Yes" << nl;
 }
 
 signed main() {
