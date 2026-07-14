@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1640
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,28 +50,30 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
+  int n, x;
+  cin >> n >> x;
+  vector<int> v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
-}
+  unordered_map<long long, int> mp;
+  mp.reserve(2 * n);
+  mp.max_load_factor(0.25);
 
+  for (int i = 0; i < n; i++) {
+    long long need = x - v[i];
+
+    auto it = mp.find(need);
+    if (it != mp.end()) {
+      cout << it->second + 1 << " " << i + 1 << '\n';
+      return;
+    }
+    mp[v[i]] = i;
+  }
+  cout << "IMPOSSIBLE";
+}
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);

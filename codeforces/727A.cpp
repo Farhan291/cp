@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/727/problem/A
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,25 +49,39 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+bool dfs(int cur, int b, vector<int> &v) {
+  if (cur > b)
+    return false;
+  if (cur == b)
+    return true;
+
+  v.push_back(2 * cur);
+  if (dfs(2 * cur, b, v))
+    return true;
+  v.pop_back();
+
+  v.push_back(10 * cur + 1);
+  if (dfs(10 * cur + 1, b, v))
+    return true;
+  v.pop_back();
+
+  return false;
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
+  int a, b;
+  cin >> a >> b;
+  vi v;
+  v.pb(a);
+  if (dfs(a, b, v)) {
+    cout << "YES" << nl;
+    cout << v.size() << nl;
+    for (auto x : v) {
+      cout << x << " ";
     }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+    cout << nl;
+  } else {
+    cout << "NO" << nl;
   }
 }
 

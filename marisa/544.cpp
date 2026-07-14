@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://marisaoj.com/problem/544
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,26 +50,34 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+void print(int n, string s) {
+  if (s.size() == n) {
+    cout << s << '\n';
+    return;
+  }
 
+  if (s.empty()) {
+    print(n, "A");
+    print(n, "B");
+    print(n, "C");
+    return;
+  }
+
+  if (s.back() == 'A') {
+    print(n, s + "B");
+    print(n, s + "C");
+  } else if (s.back() == 'B') {
+    print(n, s + "A");
+    print(n, s + "C");
+  } else {
+    print(n, s + "A");
+    print(n, s + "B");
+  }
+}
 void Mizuhara() {
   int n;
   cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  print(n, "");
 }
 
 signed main() {

@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1195
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,26 +50,60 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<pair<int, int>>> g(n + 1);
+  vector<vector<pair<int, int>>> rg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g[u].pb({v, w});
+    rg[v].pb({u, w});
+  }
+  vector<int> sdist(n + 1, 4e18);
+  vector<int> ddist(n + 1, 4e18);
+  set<pair<int, int>> ss;
+  set<pair<int, int>> sd;
+  sdist[1] = 0;
+  ddist[n] = 0;
+  ss.insert({0, 1});
+  sd.insert({0, n});
+  while (!ss.empty()) {
+    auto [d, u] = *ss.begin();
+    ss.erase(ss.begin());
+    if (sdist[u] != d)
+      continue;
+    for (auto [v, w] : g[u]) {
+      if (d + w < sdist[v]) {
+        sdist[v] = d + w;
+        ss.insert({sdist[v], v});
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  while (!sd.empty()) {
+    auto [d, u] = *sd.begin();
+    sd.erase(sd.begin());
+    if (ddist[u] != d)
+      continue;
+    for (auto [v, w] : rg[u]) {
+      if (d + w < ddist[v]) {
+        ddist[v] = d + w;
+        sd.insert({ddist[v], v});
+      }
+    }
   }
+  int mini = LONG_MAX;
+  for (int i = 1; i <= n; i++) {
+    for (auto x : g[i]) {
+      int src = sdist[i];
+      int edge = x.second / 2;
+      int dest = ddist[x.first];
+      mini = min(mini, src + edge + dest);
+    }
+  }
+  cout << mini << nl;
 }
 
 signed main() {

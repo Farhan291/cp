@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1676
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,44 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
-
-void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
+vi parent(2e5 + 1);
+vi sizes(2e5 + 1, 1);
+void make(int x) { parent[x] = x; }
+int find(int x) {
+  if (parent[x] == x)
+    return x;
+  return parent[x] = find(parent[x]);
+}
+bool Union(int a, int b) {
+  int ra = find(a);
+  int rb = find(b);
+  if (ra != rb) {
+    if (sizes[ra] < sizes[rb]) {
+      swap(ra, rb);
     }
+    parent[rb] = ra;
+    sizes[ra] += sizes[rb];
+    return true;
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  return false;
+}
+void Mizuhara() {
+  int n, m;
+  cin >> n >> m;
+  int cmpt = n;
+  int maxi = 1;
+  for (int i = 1; i <= n; i++)
+    make(i);
+  for (int i = 0; i < m; i++) {
+    int a, b;
+    cin >> a >> b;
+    if (Union(a, b)) {
+      cmpt--;
+      maxi = max(sizes[find(a)], maxi);
+      cout << cmpt << " " << maxi << nl;
+    } else {
+      cout << cmpt << " " << maxi << nl;
+    }
   }
 }
 

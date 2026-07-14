@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1202
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,26 +50,48 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
+  int n, m;
+  cin >> n >> m;
   int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+  vector<vector<pii>> g(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g[u].pb({v, w});
+  }
+  set<pii> s;
+  vi num(n + 1, 0);
+  vi dist(n + 1, 4e18);
+  vi mini(n + 1, 0);
+  vi maxi(n + 1, 0);
+  dist[1] = 0;
+  num[1] = 1;
+  mini[1] = maxi[1] = 0;
+  s.insert({0, 1});
+  while (!s.empty()) {
+    auto [d, u] = *s.begin();
+    s.erase(s.begin());
+    if (dist[u] != d)
+      continue;
+    for (auto [v, w] : g[u]) {
+      if (d + w == dist[v]) {
+        num[v] = (num[v] + num[u]) % M;
+        mini[v] = min(mini[v], mini[u] + 1);
+        maxi[v] = max(maxi[v], maxi[u] + 1);
+      }
+      if (d + w < dist[v]) {
+        dist[v] = d + w;
+        s.insert({dist[v], v});
+        mini[v] = mini[u] + 1;
+        maxi[v] = maxi[u] + 1;
+        num[v] = num[u]; // delete any old num[v] ways to reach v with old
+                         // dist[v] & update with new way to reach num[u]
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  cout << dist[n] << " " << num[n] << " " << mini[n] << " " << maxi[n] << nl;
 }
 
 signed main() {

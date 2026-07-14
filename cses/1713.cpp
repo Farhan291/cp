@@ -1,5 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
+// Url: https://cses.fi/problemset/task/1713
+// Start: 03/07/26
 // mintemplate
 #include <bits/stdc++.h>
 
@@ -50,33 +50,63 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+
+int divs[1000001] = {0};
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  int x;
+  cin >> x;
+  cout << divs[x] << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
+  for (int i = 1; i < 1000001; i++) {
+    for (int j = i; j < 1000001; j += i) {
+      divs[j]++;
+    }
+  }
   while (t--)
     Mizuhara();
 }
+
+/*#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+
+        vector<int> sieve(1e6 + 1, 0);
+        for (int i = 2; i <= 1e6; i++) {
+                if (sieve[i] == 0) {
+                        for (int j = i; j <= 1e6; j += i)
+                                sieve[j] = i;
+                }
+        }
+
+        int T;
+        cin >> T;
+
+        while (T--) {
+                int N;
+                cin >> N;
+
+                int ans = 1;
+                while (N > 1) {
+
+                        int prime = sieve[N];
+                        int exp = 0;
+
+                        while (N % prime == 0) {
+                                N /= prime;
+                                exp++;
+                        }
+
+                        ans *= (exp + 1);
+                }
+
+                cout << ans << "\n";
+        }
+}*/

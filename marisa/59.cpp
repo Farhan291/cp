@@ -1,5 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
+// Url:  https://marisaoj.com/problem/59
+// Start: 05/07/26
 // mintemplate
 #include <bits/stdc++.h>
 
@@ -50,26 +50,13 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
-
+int n, q;
+vi v;
+vi pf;
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  int x, y;
+  cin >> x >> y;
+  cout << pf[y] - pf[x - 1] << nl;
 }
 
 signed main() {
@@ -77,6 +64,16 @@ signed main() {
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
   // cin >> t;
+  cin >> n >> q;
+  v.resize(n);
+  pf.resize(n + 1);
+  t = q;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  for (int i = 1; i <= n; i++) {
+    pf[i] = pf[i - 1] + v[i - 1];
+  }
   while (t--)
     Mizuhara();
 }

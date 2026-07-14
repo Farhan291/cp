@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://marisaoj.com/problem/174
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,51 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<pair<int, int>>> g(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g[u].pb({v, w});
+    g[v].pb({u, w});
+  }
+  set<pair<int, int>> s;
+  vector<int> dist(n + 1, 4e18);
+  vector<int> parent(n + 1, -1);
+  dist[1] = 0;
+  s.insert({0, 1});
+  while (!s.empty()) {
+    auto x = *s.begin();
+    int u = x.second;
+    int d = x.first;
+    s.erase(x);
+    if (dist[u] != d)
+      continue;
+    for (auto z : g[u]) {
+      if (dist[u] + z.second < dist[z.first]) {
+        dist[z.first] = dist[u] + z.second;
+        parent[z.first] = u;
+        s.insert({dist[z.first], z.first});
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  vector<int> path;
+  int cur = n;
+  while (cur != -1) {
+    path.pb(cur);
+    cur = parent[cur];
+  }
+  reverse(all(path));
+  if (dist[n] == 4e18) {
+    cout << -1 << nl;
+    return;
+  }
+  cout << dist[n] << nl;
+  for (auto x : path) {
+    cout << x << " ";
   }
 }
 

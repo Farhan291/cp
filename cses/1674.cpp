@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1674
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,27 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+void dfs(vector<vector<int>> &v, int ve, vector<int> &s) {
+  for (auto child : v[ve]) {
+    dfs(v, child, s);
+    s[ve] += s[child] + 1;
+  }
+}
 
 void Mizuhara() {
   int n;
   cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
+  vector<vector<int>> v(n + 1);
+  vector<int> sub(n + 1, 0);
+  for (int i = 2; i <= n; i++) {
+    int x;
+    cin >> x;
+    v[x].pb(i);
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  debug(v);
+  dfs(v, 1, sub);
+  for (int i = 1; i <= n; i++) {
+    cout << sub[i] << " ";
   }
 }
 

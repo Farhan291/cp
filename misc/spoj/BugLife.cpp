@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
-// mintemplate
+// Url - https://www.spoj.com/problems/BUGLIFE/
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,33 +49,50 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+bool dfs(vector<vector<int>> &v, int ve, vector<int> &b, int color) {
+  b[ve] = color;
+  for (auto x : v[ve]) {
+    if (b[x] == -1) {
+      if (!dfs(v, x, b, 1 - color)) {
+        return false;
+      }
+    } else if (b[x] == color)
+      return false;
+  }
+  return true;
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> v(n + 1);
+  vector<int> b(n + 1, -1);
+  for (int i = 0; i < m; i++) {
+    int x, y;
+    cin >> x >> y;
+    v[x].pb(y);
+    v[y].pb(x);
+  }
+  for (int i = 1; i <= n; i++) {
+    if (b[i] == -1) {
+      bool ans = dfs(v, i, b, 0);
+      if (!ans) {
+        cout << "Suspicious bugs found!" << nl;
+        return;
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  cout << "No suspicious bugs found!" << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
-  int t = 1;
-  // cin >> t;
-  while (t--)
+  int j = 0;
+  int t = 0;
+  cin >> t;
+  while (++j <= t) {
+    cout << "Scenario #" << j << ":" << nl;
     Mizuhara();
+  }
 }

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
-// mintemplate
+// Url -https://codeforces.com/problemset/problem/580/C
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,26 +49,47 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+int ans = 0;
+void dfs(vector<vector<int>> &v, int ve, vector<int> &cat, int cnt, int m,
+         int parent) {
+  if (cat[ve])
+    cnt++;
+  else
+    cnt = 0;
+
+  if (cnt > m)
+    return;
+
+  bool isleaf = true;
+
+  for (auto child : v[ve]) {
+    if (child == parent)
+      continue;
+    dfs(v, child, cat, cnt, m, ve);
+    isleaf = false;
+  }
+  if (isleaf) {
+    ans++;
+  }
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
+  int n, m;
+  cin >> n >> m;
+  vector<int> cat(n + 1);
+  vector<vector<int>> v(n + 1);
+  for (int i = 1; i <= n; i++) {
+    cin >> cat[i];
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  for (int i = 0; i < n - 1; i++) {
+    int s, d;
+    cin >> s >> d;
+    v[s].pb(d);
+    v[d].pb(s);
   }
+  int cnt = 0;
+  dfs(v, 1, cat, cnt, m, 0);
+  cout << ans << nl;
 }
 
 signed main() {

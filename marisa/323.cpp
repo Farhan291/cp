@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://marisaoj.com/problem/323
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,26 +50,28 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+int n, k;
+void subset(int n, vector<int> &v, int i) {
+  if (i > n) {
+    if (sz(v) == k) {
+      for (auto x : v) {
+        cout << x << " ";
+      }
+      cout << nl;
+      return;
+    }
+    return;
+  }
+  v.pb(i);
+  subset(n, v, i + 1);
+  v.pop_back();
+  subset(n, v, i + 1);
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
-  }
+  cin >> n >> k;
+  vi v;
+  subset(n, v, 1);
 }
 
 signed main() {

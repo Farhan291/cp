@@ -1,6 +1,6 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
-// mintemplate
+// Url -
+// https://codeforces.com/edu/course/2/lesson/7/1/practice/contest/289390/problem/B
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,25 +50,27 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
-
+vi parent(3e5 + 5);
+void make(int x) { parent[x] = x; }
+int find(int x) {
+  if (parent[x] == x)
+    return x;
+  return parent[x] = find(parent[x]);
+}
 void Mizuhara() {
   int n;
   cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
+  for (int i = 1; i <= n; i++) {
+    make(i);
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  parent[n + 1] = find(1);
+  for (int i = 0; i < n; i++) {
+    int x;
+    cin >> x;
+    int pos = find(x);
+    parent[pos] = find(pos + 1);
+    parent[n + 1] = find(1);
+    cout << pos << " ";
   }
 }
 

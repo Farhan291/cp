@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://judge.yosupo.jp/problem/unionfind
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+
+vector<int> parent(2e5 + 1);
+vector<int> sizes(2e5 + 1, 1);
+int find(int x) {
+  if (parent[x] == x)
+    return x;
+  return parent[x] = find(parent[x]);
+}
+void Union(int a, int b) {
+  int roota = find(a);
+  int rootb = find(b);
+  if (sizes[roota] < sizes[rootb]) {
+    swap(roota, rootb);
+  }
+  parent[rootb] = roota;
+  sizes[roota] += sizes[rootb];
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
+  int n, q;
+  cin >> n >> q;
+  for (int i = 0; i < n; i++)
+    parent[i] = i;
+  while (q--) {
+    int t, u, v;
+    cin >> t >> u >> v;
+    if (!t) {
+      Union(u, v);
+    } else {
+      if (find(u) == find(v))
+        cout << 1 << nl;
+      else
+        cout << 0 << nl;
     }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
   }
 }
 

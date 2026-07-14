@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1082
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/24/problem/A
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,25 +49,17 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+void dfs(vector<vector<pair<int, int>>> &v, int ve, vector<bool> &b) {}
 
 void Mizuhara() {
   int n;
   cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
-    }
-  }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  vector<vector<pair<int, int>>> v(n);
+  vector<bool> b(n, false);
+  for (int i = 0; i < n; i++) {
+    int x, y, z;
+    cin >> x >> y >> z;
+    v[x].pb({y, z});
   }
 }
 
@@ -76,7 +67,7 @@ signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

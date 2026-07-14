@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1196
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,45 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+  int n, m, k;
+  cin >> n >> m >> k;
+  vector<vector<pair<int, int>>> g(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g[u].pb({v, w});
+  }
+  priority_queue<int> best[n + 1];
+  priority_queue<pair<int, int>, vector<pii>, greater<pii>> pq;
+  pq.push({0, 1});
+  best[1].push(0);
+  while (!pq.empty()) {
+    auto [d, u] = pq.top();
+    pq.pop();
+    if (d > best[u].top())
+      continue;
+    for (auto [v, w] : g[u]) {
+      int tmp = d + w;
+      if (sz(best[v]) < k) {
+        best[v].push(tmp);
+        pq.push({tmp, v});
+      } else if (best[v].top() > tmp) {
+        best[v].pop();
+        best[v].push(tmp);
+        pq.push({tmp, v});
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  vi ans;
+  while (!best[n].empty()) {
+    ans.pb(best[n].top());
+    best[n].pop();
+  }
+  reverse(all(ans));
+  for (auto x : ans) {
+    cout << x << " ";
   }
 }
 

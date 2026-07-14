@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://www.spoj.com/problems/FACT0/
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,22 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
+const int N = 30000000;
+bitset<N + 1> b;
 
-void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
+void precompute() {
+  b[0] = b[1] = 0;
+  for (int i = 2; i <= N; i++) {
+    if (b[i] == 0) {
+      for (int j = 2 * i; j <= N; j += i) {
+        b[j] = i;
       }
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+}
+void Mizuhara(int n) {
+  int ans = 1;
+  while (n > 1) {
   }
 }
 
@@ -77,6 +74,7 @@ signed main() {
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
   // cin >> t;
-  while (t--)
-    Mizuhara();
+  int n;
+  while (cin >> n && n != 0)
+    Mizuhara(n);
 }

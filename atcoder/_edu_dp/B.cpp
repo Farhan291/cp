@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/1082
+// Problem:
+// Contest:
+// URL: https://atcoder.jp/contests/dp/tasks/dp_b
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,26 +55,30 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
-
-void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
+int n, k;
+vi v;
+vi dp;
+int frog(int x) {
+  if (x == 0)
+    return 0;
+  if (dp[x] != -1)
+    return dp[x];
+  int ans = LONG_MAX;
+  for (int i = 1; i <= k; i++) {
+    if (x - i >= 0) {
+      ans = min(ans, frog(x - i) + abs(v[x] - v[x - i]));
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+  return dp[x] = ans;
+}
+void Mizuhara() {
+  cin >> n >> k;
+  v.resize(n);
+  dp.resize(n, -1);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
+  cout << frog(n - 1);
 }
 
 signed main() {

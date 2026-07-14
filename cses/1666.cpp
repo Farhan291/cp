@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1082
+// Url: https://cses.fi/problemset/task/1666
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,25 +50,36 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vector<int> sieve(1e6 + 1, 0);
-
-void Mizuhara() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  int M = 1e9 + 7;
-  sieve[1] = 1;
-  for (int i = 2; i <= 1e6; i++) {
-    if (sieve[i] == 0) {
-      for (int j = i; j <= 1e6; j += i) {
-        sieve[j] = (sieve[j] + i) % M;
-        sieve[j]++;
-      }
+void dfs(vector<vector<int>> &v, int vertex, vector<bool> &visited) {
+  visited[vertex] = true;
+  for (auto child : v[vertex]) {
+    if (visited[child] == false) {
+      dfs(v, child, visited);
     }
   }
-  for (int i = 1; i < n; i++) {
-    cout << sieve[i] << " ";
-    sum += sieve[i];
+}
+
+void Mizuhara() {
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> v(n + 1);
+  vector<bool> visited(n + 1, false);
+  vector<int> bridges;
+  for (int i = 0; i < m; i++) {
+    int x, y;
+    cin >> x >> y;
+    v[x].pb(y);
+    v[y].pb(x);
+  }
+  for (int i = 1; i <= n; i++) {
+    if (visited[i] == false) {
+      dfs(v, i, visited);
+      bridges.pb(i);
+    }
+  }
+  cout << bridges.size() - 1 << nl;
+  for (int i = 1; i < sz(bridges); i++) {
+    cout << bridges[i - 1] << " " << bridges[i] << nl;
   }
 }
 
