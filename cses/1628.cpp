@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1628/
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,35 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+void subset(vector<int> &v, int idx, int sum, int end, vector<int> &sub) {
+  if (idx == end) {
+    sub.pb(sum);
+    return;
+  }
+
+  subset(v, idx + 1, sum + v[idx], end, sub);
+  subset(v, idx + 1, sum, end, sub);
+}
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, x;
+  cin >> n >> x;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  vector<int> left, right;
+  subset(v, 0, 0, n / 2, left);
+  subset(v, n / 2, 0, n, right);
+  sort(all(right));
+  sort(all(left));
+  int ans = 0;
+  for (auto i : left) {
+    auto l = lower_bound(all(right), x - i);
+    auto r = upper_bound(all(right), x - i);
+    ans += r - l;
+  }
+  cout << ans << nl;
 }
 
 signed main() {

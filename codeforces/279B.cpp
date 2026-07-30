@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1633
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/279/problem/B
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -51,8 +50,26 @@ struct _debug {
 #define debug(x...)
 #endif
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, t;
+  cin >> n >> t;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  int i = 0;
+  int sum = 0;
+  int ans = 0;
+  for (int j = 0; j < n; j++) {
+    sum += v[j];
+    if (sum > t) {
+      while (sum > t) {
+        sum -= v[i];
+        i++;
+      }
+    }
+    ans = max(ans, j - i + 1);
+  }
+  cout << ans << nl;
 }
 
 signed main() {

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1633
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/977/problem/F
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,9 +49,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
   cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  // dp[v[i]] represent lis ending at v[i]
+  map<int, int> dp;
+  vector<int> parent(n);
+  for (int i = 0; i < n; i++) {
+    dp[v[i]] = max(dp[v[i]], dp[v[i] - 1] + 1);
+  }
+  int ans = 0;
+  int idx = 0;
+  for (auto [k, v] : dp) {
+    if (v > ans) {
+      ans = v;
+      idx = k;
+    }
+  }
+  cout << ans << nl;
+  vi res;
+  for (int i = n - 1; i >= 0; i--) {
+    if (v[i] == idx) {
+      res.pb(i + 1);
+      idx--;
+    }
+  }
+  reverse(all(res));
+  for (auto x : res) {
+    cout << x << " ";
+  }
 }
 
 signed main() {

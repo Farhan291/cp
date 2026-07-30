@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/1633
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,9 +55,27 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  string s;
+  cin >> s;
+  int n = sz(s);
+  int ans = 0;
+  for (int i = 0; i < 2 * n - 1; i++) {
+    int l = i / 2;
+    int r = (i + 1) / 2;
+    int mis = 0;
+    while (l >= 0 && r < n) {
+      if (s[l] != s[r])
+        mis++;
+      if (mis > 1)
+        break;
+      ans++;
+      l--;
+      r++;
+    }
+  }
+  cout << ans << nl;
 }
 
 signed main() {

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1633
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/2247/problem/A
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,16 +49,31 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
   cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  if (n & 1) {
+    cout << "NO" << nl;
+    return;
+  }
+  int s = accumulate(all(v), 0) + 400;
+  if (s % 4 == 0) {
+    cout << "YES" << nl;
+    return;
+  }
+  cout << "NO" << nl;
+  return;
 }
-
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

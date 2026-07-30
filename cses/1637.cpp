@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url:https://cses.fi/problemset/task/1637
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,26 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
   cin >> n;
+  vi dp(n + 1, 1e9);
+  dp[0] = 0;
+  for (int i = 1; i <= n; i++) {
+    int z = i;
+    vi tmp;
+    while (z > 0) {
+      int d = z % 10;
+      tmp.pb(d);
+      z /= 10;
+    }
+    for (auto x : tmp) {
+      if (i - x >= 0)
+        dp[i] = min(dp[i], dp[i - x] + 1);
+    }
+  }
+  cout << dp[n];
 }
 
 signed main() {

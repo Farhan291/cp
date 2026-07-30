@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/1633
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,9 +55,30 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int h, w;
+  int M = 1e9 + 7;
+  cin >> h >> w;
+  vector<vector<char>> g(h, vector<char>(w));
+  for (int i = 0; i < h; i++) {
+    for (int j = 0; j < w; j++) {
+      cin >> g[i][j];
+    }
+  }
+  // dp[i][j] represnet the no. of path from 0,0 to i,j
+  vector<vi> dp(h + 1, vi(w + 1, 0));
+  dp[1][1] = 1;
+  for (int i = 1; i <= h; i++) {
+    for (int j = 1; j <= w; j++) {
+      if (g[i - 1][j - 1] == '#')
+        continue;
+      if (i == 1 && j == 1)
+        continue;
+      dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % M;
+    }
+  }
+  cout << dp[h][w] << nl;
 }
 
 signed main() {

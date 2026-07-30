@@ -54,25 +54,27 @@ struct _debug {
 void Mizuhara() {
   int n, x;
   cin >> n >> x;
-  vector<int> v(n);
+  vector<pair<int, int>> v(n);
   for (int i = 0; i < n; i++) {
-    cin >> v[i];
+    int k;
+    cin >> k;
+    v[i].first = k;
+    v[i].second = i;
   }
-  unordered_map<long long, int> mp;
-  mp.reserve(2 * n);
-  mp.max_load_factor(0.25);
-
-  for (int i = 0; i < n; i++) {
-    long long need = x - v[i];
-
-    auto it = mp.find(need);
-    if (it != mp.end()) {
-      cout << it->second + 1 << " " << i + 1 << '\n';
+  sort(all(v));
+  int i = 0, j = n - 1;
+  while (i < j) {
+    int sum = v[i].first + v[j].first;
+    if (sum == x) {
+      cout << v[i].second + 1 << " " << v[j].second + 1;
       return;
     }
-    mp[v[i]] = i;
+    if (sum < x) {
+      i++;
+    } else
+      j--;
   }
-  cout << "IMPOSSIBLE";
+  cout << "IMPOSSIBLE" << nl;
 }
 signed main() {
   cin.tie(0)->sync_with_stdio(0);

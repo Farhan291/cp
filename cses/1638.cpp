@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1638
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,34 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
+  int M = 1e9 + 7;
   cin >> n;
+  vector<vector<char>> v(n, vector<char>(n));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      cin >> v[i][j];
+    }
+  }
+  vector<vector<int>> dp(n, vector<int>(n));
+  if (v[0][0] == '*') {
+    cout << 0 << nl;
+    return;
+  }
+  dp[0][0] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      if (v[i][j] == '*')
+        continue;
+      if (j - 1 >= 0 && v[i][j - 1] != '*')
+        dp[i][j] = (dp[i][j] + dp[i][j - 1]) % M;
+      if (i - 1 >= 0 && v[i - 1][j] != '*')
+        dp[i][j] = (dp[i][j] + dp[i - 1][j]) % M;
+    }
+  }
+  cout << dp[n - 1][n - 1];
 }
 
 signed main() {

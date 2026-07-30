@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/1633
+// Problem: https://atcoder.jp/contests/dp/tasks/dp_g
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,9 +55,41 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> g(n + 1);
+  vector<int> indeg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    indeg[v]++;
+  }
+  queue<int> q;
+  for (int i = 1; i <= n; i++) {
+    if (indeg[i] == 0)
+      q.push(i);
+  }
+  vector<int> topo;
+  while (!q.empty()) {
+    auto x = q.front();
+    topo.pb(x);
+    q.pop();
+    for (auto v : g[x]) {
+      if (--indeg[v] == 0)
+        q.push(v);
+    }
+  }
+  // dp[i] represent longest path till ith node
+  vector<int> dp(n + 1);
+  for (auto u : topo) {
+    for (auto v : g[u]) {
+      dp[v] = max(dp[v], dp[u] + 1);
+    }
+  }
+  cout << *max_element(all(dp)) << nl;
 }
 
 signed main() {

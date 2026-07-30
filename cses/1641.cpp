@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1641
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,35 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, x;
+  cin >> n >> x;
+  vector<pair<int, int>> v(n);
+  for (int i = 0; i < n; i++) {
+    int k;
+    cin >> k;
+    v[i].first = k;
+    v[i].second = i;
+  }
+  sort(all(v));
+  for (int i = 0; i < n; i++) {
+    int l = i + 1, r = n - 1;
+    int t = x - v[i].first;
+    while (l < r) {
+      int sum = v[l].first + v[r].first;
+      if (sum == t) {
+        cout << v[l].second + 1 << " " << v[r].second + 1 << " "
+             << v[i].second + 1 << nl;
+        return;
+      }
+      if (sum < t)
+        l++;
+      else
+        r--;
+    }
+  }
+  cout << "IMPOSSIBLE" << nl;
 }
 
 signed main() {

@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1093
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,26 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
+  int M = 1e9 + 7;
+  int inv2 = (M + 1) / 2;
   cin >> n;
+  int sum = n * (n + 1) / 2;
+  if (sum & 1) {
+    cout << 0 << nl;
+    return;
+  }
+  sum /= 2;
+  vi dp(sum + 1);
+  dp[0] = 1;
+  for (int i = 1; i <= n; i++) {
+    for (int j = sum; j >= i; j--) {
+      dp[j] = (dp[j] + dp[j - i]) % M;
+    }
+  }
+  cout << (dp[sum] * inv2) % M << nl;
 }
 
 signed main() {

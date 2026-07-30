@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1679
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> g(n + 1);
+  vector<int> indeg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    indeg[v]++;
+  }
+  queue<int> q;
+  for (int i = 1; i <= n; i++) {
+    if (indeg[i] == 0)
+      q.push(i);
+  }
+  vector<int> topo;
+  while (!q.empty()) {
+    auto x = q.front();
+    topo.pb(x);
+    q.pop();
+    for (auto u : g[x]) {
+      if (--indeg[u] == 0)
+        q.push(u);
+    }
+  }
+  if (sz(topo) != n) {
+    cout << "IMPOSSIBLE" << nl;
+    return;
+  }
+  for (auto x : topo) {
+    cout << x << " ";
+  }
 }
 
 signed main() {

@@ -4,8 +4,16 @@
 - https://cses.fi/problemset/task/1202/
 - https://cses.fi/problemset/task/1196/
 - https://cses.fi/problemset/task/1195
+- https://cses.fi/problemset/task/1680/
 - https://www.spoj.com/problems/BUGLIFE/
 - https://leetcode.com/submissions/detail/2065124319/
+- https://leetcode.com/problems/path-with-minimum-effort/description/
+
+## topo order mixed with dp
+
+- https://codeforces.com/problemset/problem/825/E (must try)
+- https://leetcode.com/problems/longest-increasing-path-in-a-matrix/description/
+- https://cses.fi/problemset/task/1757
 
 two most important thing is dfs and bfs
 

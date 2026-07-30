@@ -1,8 +1,12 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url:
 // Start:
 // mintemplate
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <deque>
+#include <iostream>
+#include <vector>
 
+using namespace std;
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
@@ -14,10 +18,6 @@
 #define db double
 
 using namespace std;
-template <typename T> void sort_unique(vector<T> &vec) {
-  sort(vec.begin(), vec.end());
-  vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
-}
 const char nl = '\n';
 
 #ifdef REZE
@@ -50,16 +50,52 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-void Mizuhara() {
-  int n;
-  cin >> n;
+
+bool Mizuhara() {
+  int n, k;
+  if (!(cin >> n >> k))
+    return false;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  deque<int> mini, maxi;
+  vi a, b;
+  int i = 0;
+  for (int j = 0; j < n; j++) {
+    while (!mini.empty() && v[mini.back()] > v[j]) {
+      mini.pop_back();
+    }
+    while (!maxi.empty() && v[maxi.back()] < v[j]) {
+      maxi.pop_back();
+    }
+    mini.pb(j);
+    maxi.pb(j);
+    if (j - i + 1 < k)
+      continue;
+    else {
+      a.pb(v[mini.front()]);
+      if (!mini.empty() && mini.front() == i)
+        mini.pop_front();
+      b.pb(v[maxi.front()]);
+      if (!maxi.empty() && maxi.front() == i)
+        maxi.pop_front();
+      i++;
+    }
+  }
+  for (int i = 0; i < sz(a); i++) {
+    (i != sz(a) - 1) ? cout << a[i] << " " : cout << a[i] << nl;
+  }
+  for (int i = 0; i < sz(b); i++) {
+    (i != sz(b) - 1) ? cout << b[i] << " " : cout << b[i] << nl;
+  }
+  return true;
 }
 
 signed main() {
-  cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
-  int t = 1;
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   // cin >> t;
-  while (t--)
-    Mizuhara();
+  while (Mizuhara())
+    ;
 }

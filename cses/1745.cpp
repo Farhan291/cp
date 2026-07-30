@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1745
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,26 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
   cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  vector<int> dp(1e5 + 1, 0);
+  dp[0] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = 1e5; j >= v[i]; j--) {
+      dp[j] = dp[j] || dp[j - v[i]];
+    }
+  }
+  cout << accumulate(all(dp), 0) - 1 << nl;
+  for (int i = 1; i <= 1e5; i++) {
+    if (dp[i])
+      cout << i << " ";
+  }
 }
 
 signed main() {

@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/1633
+// Problem:
+// Contest:
+// URL: https://atcoder.jp/contests/dp/tasks/dp_d
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,9 +55,22 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, w;
+  cin >> n >> w;
+  vi we(n), v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> we[i] >> v[i];
+  }
+  vector<int> dp(w + 1);
+  dp[0] = 0;
+  for (int j = 0; j < n; j++) {
+    for (int i = w; i >= we[j]; i--) {
+      dp[i] = max(dp[i], dp[i - we[j]] + v[j]);
+    }
+  }
+  cout << dp[w] << nl;
 }
 
 signed main() {

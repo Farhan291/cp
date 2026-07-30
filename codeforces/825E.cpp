@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1633
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/825/problem/E
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,9 +49,38 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<vi> g(n + 1);
+  vi outdeg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[v].pb(u);
+    outdeg[u]++;
+  }
+  set<int, greater<int>> s;
+  for (int i = 1; i <= n; i++) {
+    if (outdeg[i] == 0) {
+      s.insert(i);
+    }
+  }
+  vector<int> topo(n + 1);
+  int idx = n;
+  while (!s.empty()) {
+    auto u = *s.begin();
+    topo[u] = idx--;
+    s.erase(s.begin());
+    for (auto v : g[u]) {
+      if (--outdeg[v] == 0)
+        s.insert(v);
+    }
+  }
+  for (int i = 1; i <= n; i++) {
+    cout << topo[i] << " ";
+  }
 }
 
 signed main() {

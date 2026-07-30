@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1746
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  int M = 1e9 + 7;
+  cin >> n >> m;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  // dp[i][x] represent how many ways to have array with ith position as x
+  vector<vector<int>> dp(n, vector<int>(m + 1));
+  if (v[0] == 0) {
+    for (int i = 1; i <= m; i++) {
+      dp[0][i] = 1;
+    }
+  } else {
+    dp[0][v[0]] = 1;
+  }
+  for (int i = 1; i < n; i++) {    // for every index from 1 to n-2
+    for (int j = 1; j <= m; j++) { // for every no. from 0 to m
+      for (auto z : {j, j + 1, j - 1}) {
+        if (1 <= z && z <= m) {
+          if (v[i] != 0 && v[i] != z)
+            continue;
+          dp[i][z] = (dp[i][z] + dp[i - 1][j]) % M;
+        }
+      }
+    }
+  }
+  int ans = 0;
+  for (auto x : dp[n - 1]) {
+    ans = (ans + x) % M;
+  }
+  cout << ans << nl;
 }
 
 signed main() {

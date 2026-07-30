@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://marisaoj.com/problem/140
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,19 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
   int n;
   cin >> n;
+  int M = 1e9 + 7;
+  vi dp(n + 1);
+  dp[0] = 1;
+  dp[1] = 1;
+  dp[2] = 2;
+  for (int i = 3; i <= n; i++) {
+    dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3]) % M;
+  }
+  cout << dp[n] << nl;
 }
 
 signed main() {

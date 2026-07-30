@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1639
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,29 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  string n, m;
+  cin >> n >> m;
+  // dp[i][j] represent cost to transform first i characters of n to first j
+  // chars of m
+  vector<vector<int>> dp(sz(n) + 1, vector<int>(sz(m) + 1, 1e9));
+  dp[0][0] = 0;
+  for (int i = 1; i <= n.size(); i++)
+    dp[i][0] = i;
+  for (int j = 1; j <= m.size(); j++)
+    dp[0][j] = j;
+  for (int i = 1; i <= sz(n); i++) {
+    for (int j = 1; j <= sz(m); j++) {
+      // add char in n to match with m[j]
+      dp[i][j] = min(dp[i][j], dp[i][j - 1] + 1);
+      // remove char
+      dp[i][j] = min(dp[i][j], dp[i - 1][j] + 1);
+      // replace char
+      dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + (n[i - 1] != m[j - 1]));
+    }
+  }
+  cout << dp[sz(n)][sz(m)];
 }
 
 signed main() {

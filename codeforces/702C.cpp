@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/1633
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/702/problem/C
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,9 +49,42 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+bool check(vi &c, vi &t, int k) {
+  int j = 0;
+  for (int i = 0; i < sz(t); i++) {
+    int l = t[i] - k;
+    int r = t[i] + k;
+    while (j < sz(c) && c[j] >= l && c[j] <= r) {
+      j++;
+    }
+  }
+  return j == sz(c);
+}
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vi c(n);
+  vi t(m);
+  for (int i = 0; i < n; i++) {
+    cin >> c[i];
+  }
+  for (int i = 0; i < m; i++) {
+    cin >> t[i];
+  }
+  int lo = 0;
+  int hi = 1e13;
+  int ans = 0;
+  while (lo <= hi) {
+    int mid = (hi - lo) / 2 + lo;
+    if (check(c, t, mid)) {
+      ans = mid;
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+  cout << ans << nl;
 }
 
 signed main() {
@@ -62,4 +94,23 @@ signed main() {
   // cin >> t;
   while (t--)
     Mizuhara();
+}
+
+dp[0] = v[0];
+for (int i = 1; i < n; i++) {
+  for (int j : {1, 2}) {
+    for (int k : {1, 2}) {
+      if (j == 2 && k == j)
+        continue;
+      dp[i][k] = min(dp[i][k], dp[i - j][j]);
+    }
+  }
+}
+
+for (int i = 0; i < n; i++) {
+  for (int j = 0; j < i; j++) {
+    if (arr[i] > arr[j]) {
+      dp[i][sum] = max(dp[i], dp[j] + 1);
+    }
+  }
 }

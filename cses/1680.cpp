@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/1633
+// Url: https://cses.fi/problemset/task/1680
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,9 +50,61 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> g(n + 1);
+  vector<int> indeg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    indeg[v]++;
+  }
+  queue<int> q;
+  for (int i = 1; i < n + 1; i++) {
+    if (indeg[i] == 0)
+      q.push(i);
+  }
+  vector<int> topo;
+  while (!q.empty()) {
+    auto x = q.front();
+    topo.pb(x);
+    q.pop();
+    for (auto v : g[x]) {
+      if (--indeg[v] == 0)
+        q.push(v);
+    }
+  }
+  // dp[i] represnt longest flight route possible from 1 to i city
+  vector<int> dp(n + 1, -1);
+  vector<int> parent(n + 1, -1);
+  dp[1] = 1;
+  for (auto u : topo) {
+    if (dp[u] == -1)
+      continue;
+    for (auto v : g[u]) {
+      dp[v] = max(dp[v], dp[u] + 1);
+      if (dp[u] + 1 == dp[v])
+        parent[v] = u;
+    }
+  }
+  vector<int> path;
+  int cur = n;
+  while (cur != -1) {
+    path.pb(cur);
+    cur = parent[cur];
+  }
+  reverse(all(path));
+  if (dp[n] == -1) {
+    cout << "IMPOSSIBLE" << nl;
+    return;
+  }
+  cout << dp[n] << nl;
+  for (auto x : path) {
+    cout << x << " ";
+  }
 }
 
 signed main() {

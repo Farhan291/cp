@@ -1,0 +1,7 @@
+[clist](https://clist.by/coder/light_chan/)
+[codeforces](https://codeforces.com/profile/light_chan)
+[cses](https://cses.fi/user/360189)
+[atcoder](https://atcoder.jp/users/Lightchan)
+[leetcode](https://leetcode.com/u/lightchan/)
+[marisaoj](https://marisaoj.com/user/light_chan/submissions)
+[luogu](https://www.luogu.com.cn/user/1943447)
