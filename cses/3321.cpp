@@ -51,7 +51,72 @@ struct _debug {
 #define debug(x...)
 #endif
 
+// aggstack approach
+class Aggstack {
+public:
+  stack<pair<int, int>> st;
+
+  int agg() { return st.top().second; }
+
+  void push(int v) {
+    (st.empty()) ? st.push({v, v}) : st.push({v, min(v, agg())});
+  }
+
+  void pop() { st.pop(); }
+};
+class Aggqueue {
+  Aggstack in, out;
+
+public:
+  void push(int v) { in.push(v); }
+  void pop() {
+    if (out.st.empty()) {
+      while (!in.st.empty()) {
+        int v = in.st.top().first;
+        in.pop();
+        out.push(v);
+      }
+    }
+    out.pop();
+  }
+  int query() {
+    if (in.st.empty())
+      return out.agg();
+    if (out.st.empty())
+      return in.agg();
+    return min(out.agg(), in.agg());
+  }
+};
 void Mizuhara() {
+  int n, k;
+  cin >> n >> k;
+  int x, a, b, c;
+  cin >> x >> a >> b >> c;
+  vi v(n);
+  v[0] = x;
+  for (int i = 1; i < n; i++) {
+    v[i] = (a * v[i - 1] + b) % c;
+  }
+  Aggqueue aq;
+  for (int i = 0; i < k; i++) {
+    aq.push(v[i]);
+  }
+  vi ans;
+  ans.pb(aq.query());
+  for (int i = k; i < n; i++) {
+    aq.push(v[i]);
+    aq.pop();
+    ans.pb(aq.query());
+  }
+  int anss = 0;
+  for (auto x : ans) {
+    anss ^= x;
+  }
+  cout << anss << nl;
+}
+
+// deque approach
+/*void Mizuhara() {
   int n, k;
   cin >> n >> k;
   int x, a, b, c;
@@ -85,7 +150,7 @@ void Mizuhara() {
     anss ^= v[i];
   }
   cout << anss << nl;
-}
+}*/
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);

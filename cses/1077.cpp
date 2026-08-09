@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/3405
+// Url: https://cses.fi/problemset/task/1077
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,60 +50,72 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
   int n, k;
   cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
   vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
+  multiset<int> l, r;
+  int lsum = 0, rsum = 0;
   for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+    l.insert(v[i]);
+    lsum += v[i];
   }
-  ans.pb(aq.query());
+  while (sz(l) > (k + 1) / 2) {
+    r.insert(*prev(l.end()));
+    rsum += *prev(l.end());
+    lsum -= *prev(l.end());
+    l.erase(prev(l.end()));
+  }
+  if (k & 1) {
+    int med = *prev(l.end());
+    int cost = sz(l) * med - lsum + rsum - sz(r) * med;
+    cout << cost << " ";
+  } else {
+    int med = (*prev(l.end()) + *r.begin()) / 2;
+    int cost = sz(l) * med - lsum + rsum - sz(r) * med;
+    cout << cost << " ";
+  }
   for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+    if (v[i] <= *prev(l.end())) {
+      l.insert(v[i]);
+      lsum += v[i];
+    } else {
+      r.insert(v[i]);
+      rsum += v[i];
+    }
+    if (v[i - k] <= *prev(l.end())) {
+      l.extract(v[i - k]);
+      lsum -= v[i - k];
+    } else {
+      r.extract(v[i - k]);
+      rsum -= v[i - k];
+    }
+    while (sz(l) < (k + 1) / 2) {
+      l.insert(*r.begin());
+      lsum += *r.begin();
+      rsum -= *r.begin();
+      r.erase(r.begin());
+    }
+    while (sz(l) > (k + 1) / 2) {
+      r.insert(*prev(l.end()));
+      rsum += *prev(l.end());
+      lsum -= *prev(l.end());
+      l.erase(prev(l.end()));
+    }
+    if (k & 1) {
+      int med = *prev(l.end());
+      int cost = sz(l) * med - lsum + rsum - sz(r) * med;
+      cout << cost << " ";
+    } else {
+      int med = (*prev(l.end()) + *r.begin()) / 2;
+      int cost = sz(l) * med - lsum + rsum - sz(r) * med;
+      cout << cost << " ";
+    }
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
 }
 
 signed main() {

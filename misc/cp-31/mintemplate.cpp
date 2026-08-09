@@ -51,7 +51,7 @@ struct _debug {
 #define debug(x...)
 #endif
 
-bool Mizuhara() {
+/*bool Mizuhara() {
   int n, k;
   if (!(cin >> n >> k))
     return false;
@@ -90,12 +90,35 @@ bool Mizuhara() {
     (i != sz(b) - 1) ? cout << b[i] << " " : cout << b[i] << nl;
   }
   return true;
+}*/
+void Mizuhara() {
+  int n;
+  cin >> n;
+  vi nums(n);
+  for (int i = 0; i < n; i++) {
+    cin >> nums[i];
+  }
+  vi v;
+  int mini = min({nums[0], nums[1], nums[2]});
+  v.pb(mini);
+  int cost = max({nums[0], nums[1], nums[2]});
+  if (n == 4) {
+    cost += max({mini, nums[3]});
+  }
+  for (int i = 3; i < n - 1; i++) {
+    cost += max({mini, nums[i], nums[i + 1]});
+    mini = min({mini, nums[i], nums[i + 1]});
+    v.pb(mini);
+    debug(i);
+  }
+  debug(v);
+  cout << cost << nl;
 }
 
 signed main() {
   ios::sync_with_stdio(false);
   cin.tie(0);
   // cin >> t;
-  while (Mizuhara())
-    ;
+  // while (Mizuhara())
+  Mizuhara();
 }

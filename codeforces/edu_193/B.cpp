@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,69 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
+int n;
+bool check(vi v, int k) {
+  int del = n - k;
+  for (int i = 1; i < n; i++) {
+    if (v[i] == v[i - 1])
+      if (del > 0) {
+        del--;
+        v.erase(v.begin() + i);
       }
+    if (del == 0)
+      break;
+  }
+  debug(del);
+  bool done = false;
+  debug(k, v);
+  for (int i = 0; i < sz(v); i++) {
+    if (v[i] == v[i - 1]) {
+      if (done)
+        return false;
+      if (i == sz(v) - 1) {
+        if (sz(v) > 3) {
+          if (v[i] == v[i - 2] || v[i - 1] == v[i - 3])
+            return false;
+          continue;
+        }
+      }
+      if (v[i - 1] == v[i + 1])
+        return false;
+      if (i != sz(v) - 1)
+        swap(v[i], v[i + 1]);
+      done = true;
     }
-    out.pop();
   }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
+  return true;
+}
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
+  cin >> n;
+  cerr << n;
   vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  int lo = 1;
+  int hi = n;
+  int ans = 0;
+  while (lo <= hi) {
+    int mid = lo + (hi - lo) / 2;
+    if (check(v, mid)) {
+      ans = mid;
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
+  cout << ans << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,44 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
   int n, k;
   cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  if (n > 1 && k == n - 1) {
+    cout << -1 << '\n';
+    return;
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  int c0 = (n + 1) / 2, c1 = n / 2;
+  int blocks = n - k;
+  for (int i = 1; i <= blocks; i++) {
+    if (i & 1) {
+      if (i == blocks - 1) {
+        while (c0--)
+          cout << 0;
+      } else {
+        c0--;
+        cout << 0;
+      }
+    } else {
+      if (i == blocks) {
+        while (c1--) {
+          cout << 1;
+        }
+        cout << nl;
+      } else {
+        c1--;
+        cout << 1;
+      }
+    }
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

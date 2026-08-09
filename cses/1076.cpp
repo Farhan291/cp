@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/3405
+// Url: https://cses.fi/problemset/task/1076
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,60 +50,42 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
   int n, k;
   cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
   vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
+  multiset<int> l, r;
   for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+    l.insert(v[i]);
   }
-  ans.pb(aq.query());
+  while (sz(l) > (k + 1) / 2) {
+    r.insert(*l.rbegin());
+    l.erase(prev(l.end()));
+  }
+  cout << *prev(l.end()) << " ";
   for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+    if (v[i] <= *prev(l.end()))
+      l.insert(v[i]);
+    else
+      r.insert(v[i]);
+    if (v[i - k] <= *prev(l.end()))
+      l.extract(v[i - k]);
+    else
+      r.extract(v[i - k]);
+    while (sz(l) < (k + 1) / 2) {
+      l.insert(*r.begin());
+      r.erase(r.begin());
+    }
+    while (sz(l) > (k + 1) / 2) {
+      r.insert(*prev(l.end()));
+      l.erase(prev(l.end()));
+    }
+    cout << *prev(l.end()) << " ";
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
 }
 
 signed main() {

@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/3405
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,60 +55,38 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  int n, q;
+  cin >> n >> q;
+  vi v(n + 1);
+  set<int> s;
+  int ans = 0;
+  while (q--) {
+    int u, x;
+    cin >> u;
+    if (u == 1) {
+      cin >> x;
+      int prev = v[x];
+      v[x]++;
+      s.insert(x);
+      ans ^= prev;
+      ans ^= v[x];
+      cout << ans << nl;
+    } else {
+      set<int> t;
+      for (auto x : s) {
+        ans ^= v[x];
+        ans ^= (v[x] - 1);
+        if (--v[x] == 0)
+          t.insert(x);
+      }
+      cout << ans << nl;
+      for (auto x : t) {
+        s.erase(x);
+      }
+    }
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
-  }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
 }
 
 signed main() {

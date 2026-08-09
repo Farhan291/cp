@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url - https://codeforces.com/contest/2244/problem/B
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,47 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
+  int n;
+  cin >> n;
   vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  if (n == 1) {
+    cout << "YES" << nl;
+    return;
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+  if (v[0] != 1) {
+    v[1] += v[0] - 1;
+    v[0] = 1;
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
+  if (n == 2 && v[0] >= v[1]) {
+    cout << "NO" << nl;
+    return;
   }
-  cout << anss << nl;
+  for (int i = 1; i < n - 1; i++) {
+    if (v[i - 1] >= v[i]) {
+      cout << "NO" << nl;
+      return;
+    }
+    int excess = v[i] - v[i - 1] - 1;
+    v[i + 1] += excess;
+    v[i] -= excess;
+    if (v[i] >= v[i + 1]) {
+      cout << "NO" << nl;
+      return;
+    }
+  }
+  cout << "YES" << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url - https://codeforces.com/problemset/problem/10/D
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,60 +49,43 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  int n, m;
+  cin >> n;
+  vi a(n);
+  for (int i = 0; i < n; i++) {
+    cin >> a[i];
   }
+  cin >> m;
+  vi b(m);
+  for (int i = 0; i < m; i++) {
+    cin >> b[i];
+  }
+  // dp[j] reprenset lcis ending at b[j]
+  vector<int> dp(m);
+  vector<int> p(m, -1);
+  for (int i = 0; i < n; i++) {
+    int best = 0;
+    for (int j = 0; j < m; j++) {
+      if (a[i] == b[j]) {
+        dp[j] = max(dp[j], best + 1);
+        p[j] = i;
+      }
+      if (b[j] < a[i])
+        best = max(best, dp[j]);
+    }
+  }
+  cout << *max_element(all(dp)) << nl;
   vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  int as = max_element(all(dp)) - dp.begin();
+  while (as != -1) {
+    ans.pb(dp[as]);
+    as = p[as];
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
   for (auto x : ans) {
-    anss ^= x;
+    cout << x << " ";
   }
-  cout << anss << nl;
 }
 
 signed main() {

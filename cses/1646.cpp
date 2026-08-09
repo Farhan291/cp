@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/3405
+// Url: https://cses.fi/problemset/task/1646
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,60 +50,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
+vi tree;
+int f(int node, int node_low, int node_high, int query_low, int query_high) {
+  if (node_low >= query_low && node_high <= query_high)
+    return tree[node];
+  if (node_high < query_low || node_low > query_high)
+    return 0;
+  int left_id = (node_low + node_high) / 2;
+  return f(2 * node, node_low, left_id, query_low, query_high) +
+         f(2 * node + 1, left_id + 1, node_high, query_low, query_high);
+}
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
+  int n, q;
+  cin >> n >> q;
   vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  while (__builtin_popcount(n) != 1) {
+    v.pb(0);
+    n++;
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+  tree.resize(2 * n);
+  for (int i = 0; i < n; i++) {
+    tree[n + i] = v[i];
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
+  for (int i = n - 1; i > 0; i--) {
+    tree[i] = tree[2 * i] + tree[2 * i + 1];
   }
-  cout << anss << nl;
+  while (q--) {
+    int a, b;
+    cin >> a >> b;
+    cout << f(1, 0, n - 1, a - 1, b - 1) << nl;
+  }
 }
 
 signed main() {

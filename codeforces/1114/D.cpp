@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,55 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  int n;
+  cin >> n;
+  vi b(n);
+  for (int i = 0; i < n; i++) {
+    cin >> b[i];
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  vi c = b;
+  sort(all(b));
+  map<int, int> m;
+  for (int i = 0; i < n; i++) {
+    m[b[i]]++;
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+  if (!m.count(0)) {
+    cout << -1 << nl;
+    return;
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
+  b.erase(unique(all(b)), b.end());
+  vi a;
+  for (int i = 1; i < sz(b); i++) {
+    int diff = b[i] - b[i - 1];
+    if (diff % m[b[i - 1]] != 0) {
+      cout << -1 << nl;
+      return;
+    }
+    if (!a.empty() && diff / m[b[i - 1]] <= a.back()) {
+      cout << -1 << nl;
+      return;
+    }
+    a.pb(diff / m[b[i - 1]]);
   }
-  cout << anss << nl;
+  if (a.empty())
+    a.push_back(1);
+  else
+    a.push_back(a.back() + 1);
+  debug(a);
+  for
+    for (auto x : a) {
+      cout << x << " ";
+    }
+  cout << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

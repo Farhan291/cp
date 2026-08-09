@@ -1,19 +1,24 @@
-// Url: https://cses.fi/problemset/task/3405
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,60 +55,56 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
+int n;
+set<pii> ans;
+void check(int fixed, vector<pii> &v) {
+  bool uncover = false;
+  vector<int> cand;
+  for (auto [x, y] : v) {
+    if (x == fixed || y == fixed)
+      continue;
+    if (!uncover) {
+      cand.pb(x);
+      cand.pb(y);
+      uncover = true;
+
+    } else {
+      vi next;
+      for (auto z : cand) {
+        if (z == x || z == y)
+          next.pb(z);
       }
+      cand = next;
+      if (cand.empty())
+        break;
     }
-    out.pop();
   }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
+  if (!uncover) {
+    for (int i = 1; i <= n; i++) {
+      if (i == fixed)
+        continue;
+      ans.insert({min(fixed, i), max(fixed, i)});
+    }
+  } else {
+    for (auto x : cand) {
+      ans.insert({min(x, fixed), max(x, fixed)});
+    }
   }
-};
+}
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  int m;
+  cin >> n >> m;
+  map<int, int> mp;
+  vector<pair<int, int>> v;
+  for (int i = 0; i < m; i++) {
+    int p, q;
+    cin >> p >> q;
+    v.pb({p, q});
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
-  }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
+  check(v[0].first, v);
+  check(v[0].second, v);
+  cout << sz(ans) << nl;
 }
 
 signed main() {

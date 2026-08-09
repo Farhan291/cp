@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url - https://codeforces.com/gym/102694/problem/A
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,60 +49,44 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
+int n;
+pair<int, int> bfs(int src, vector<vi> &g) {
+  vi level(n + 1, -1);
+  queue<int> q;
+  level[src] = 0;
+  q.push(src);
+  while (!q.empty()) {
+    int u = q.front();
+    q.pop();
+    for (auto v : g[u]) {
+      if (level[v] == -1) {
+        level[v] = level[u] + 1;
+        q.push(v);
       }
     }
-    out.pop();
   }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
+  int node = 0;
+  int maxi = 0;
+  for (int i = 1; i <= n; i++) {
+    if (level[i] > maxi) {
+      maxi = level[i];
+      node = i;
+    }
   }
-};
-
+  return {node, maxi};
+}
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  cin >> n;
+  vector<vector<int>> g(n + 1);
+  for (int i = 0; i < n - 1; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    g[v].pb(u);
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
-  }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
+  auto [n1, d1] = bfs(1, g);
+  auto [n2, d2] = bfs(n1, g);
+  cout << d2 * 3 << nl;
 }
 
 signed main() {

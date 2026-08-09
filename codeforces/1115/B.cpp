@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,73 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
+  int n;
+  cin >> n;
+  string s;
+  cin >> s;
+  int c0 = 0, c1 = 0;
+  for (auto x : s) {
+    if (x == '0')
+      c0++;
+    else
+      c1++;
+  }
+  // dp[i][j] represent longest alternate subsequnce ending on i with j as
+  // startchar endingchar 0->00 1->01 2->10 3->11
+  vector<vector<int>> dp(n + 1, vector<int>(4, -1e9));
+  if (s[0] == '0') {
+    dp[0][0] = 1;
+  } else {
+    dp[0][3] = 1;
+  }
   for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+    // skip s[i]
+    for (int j = 0; j < 4; j++) {
+      dp[i][j] = dp[i - 1][j];
+    }
+    if (s[i] == '0') {
+      if (dp[i - 1][1] != -1e9)
+        dp[i][0] = max(dp[i][0], dp[i - 1][1] + 1);
+      if (dp[i - 1][3] != -1e9)
+        dp[i][2] = max(dp[i][2], dp[i - 1][3] + 1);
+      // las start at i
+      dp[i][0] = max(dp[i][0], 1ll);
+    } else {
+      if (dp[i - 1][0] != -1e9)
+        dp[i][1] = max(dp[i][1], dp[i - 1][0] + 1);
+      if (dp[i - 1][2] != -1e9)
+        dp[i][3] = max(dp[i][3], dp[i - 1][2] + 1);
+      // las start at i
+      dp[i][3] = max(dp[i][3], 1ll);
+    }
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  int ans = -1;
+  int original_diff = c1 - c0;
+  for (int j = 0; j < 4; j++) {
+    int kept_diff;
+    if (j == 0)
+      kept_diff = -1;
+    else if (j == 1 || j == 2)
+      kept_diff = 0;
+    else
+      kept_diff = 1;
+    if (abs(original_diff - kept_diff) <= 1) {
+      ans = max(ans, dp[n - 1][j]);
+    }
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+  if (ans == -1) {
+    cout << -1 << nl;
+    return;
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
+  cout << n - ans << nl;
 }
-
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

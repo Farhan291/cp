@@ -1,4 +1,4 @@
-// Url: https://cses.fi/problemset/task/3405
+// Url: https://cses.fi/problemset/task/1688
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,60 +50,57 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
+  int n, q;
+  int LOG = 1;
+  cin >> n >> q;
+  while ((1 << LOG) <= n) {
+    LOG++;
+  }
+  vi parent(n);
+  vi depth(n);
   for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+    cin >> parent[i];
+    parent[i]--;
+    depth[i] = depth[parent[i]] + 1;
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  vector<vector<int>> up(n, vi(LOG, -1));
+  for (int i = 0; i < n; i++) {
+    up[i][0] = parent[i];
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
+  for (int j = 1; j < LOG; j++) {
+    for (int i = 0; i < n; i++) {
+      up[i][j] = up[up[i][j - 1]][j - 1];
+    }
   }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
+  auto lca = [&](int u, int v) {
+    if (depth[v] > depth[u])
+      swap(u, v);
+    int k = depth[u] - depth[v];
+    for (int j = 0; j < LOG; j++) {
+      if (k & (1 << j)) {
+        u = up[u][j];
+      }
+    }
+    if (u == v) {
+      return u;
+    }
+    for (int j = LOG - 1; j >= 0; j--) {
+      if (up[u][j] != up[v][j]) {
+        u = up[u][j];
+        v = up[v][j];
+      }
+    }
+    return up[u][0];
+  };
+  while (q--) {
+    int u, v;
+    cin >> u >> v;
+    u--;
+    v--;
+    cout << lca(u, v) + 1 << nl;
   }
-  cout << anss << nl;
 }
 
 signed main() {

@@ -1,6 +1,5 @@
-// Url: https://cses.fi/problemset/task/3405
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,67 +49,40 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-struct aggstack {
-  stack<pii> st;
-  int agg() { return st.top().second; }
-  void push(int v) { st.empty() ? st.push({v, v}) : st.push({v, v | agg()}); }
-  void pop() { st.pop(); }
-};
-struct aggqueue {
-  aggstack in, out;
-  void push(int v) { in.push(v); }
-  void pop() {
-    if (out.st.empty()) {
-      while (!in.st.empty()) {
-        int v = in.st.top().first;
-        out.push(v);
-        in.pop();
-      }
-    }
-    out.pop();
-  }
-  int query() {
-    if (in.st.empty())
-      return out.agg();
-    if (out.st.empty())
-      return in.agg();
-    return (in.agg() | out.agg());
-  }
-};
 
 void Mizuhara() {
-  int n, k;
-  cin >> n >> k;
-  int x, a, b, c;
-  cin >> x >> a >> b >> c;
-  vi v(n);
-  v[0] = x;
-  for (int i = 1; i < n; i++) {
-    v[i] = (a * v[i - 1] + b) % c;
+  int n;
+  cin >> n;
+  vi v(2 * n);
+  for (int i = 0; i < 2 * n; i++) {
+    cin >> v[i];
   }
-  vi ans;
-  aggqueue aq;
-  for (int i = 0; i < k; i++) {
-    aq.push(v[i]);
+  // dp[i] represent maximum sum possible with first i elements
+  // at each i if its second occuerence then dp = max ( considering its first
+  // and thsi index so its total will be (r-l)^2, not considering so it will be
+  // singleton as its first occurence will be consume by some other interval) if
+  // i is first occurence consider it singleton == dp[i-1]+1
+  vector<int> dp(2 * n + 1);
+  dp[0] = 0;
+  vector<int> first(n + 1, -1);
+  for (int i = 1; i <= 2 * n; i++) {
+    if (first[v[i - 1]] == -1) {
+      first[v[i - 1]] = i;
+      dp[i] = dp[i - 1] + 1;
+    } else {
+      dp[i] = max(dp[i - 1] + 1,
+                  (i - first[v[i - 1]] + 1) * (i - first[v[i - 1]] + 1) +
+                      dp[first[v[i - 1]] - 1]);
+    }
   }
-  ans.pb(aq.query());
-  for (int i = k; i < n; i++) {
-    aq.push(v[i]);
-    aq.pop();
-    ans.pb(aq.query());
-  }
-  int anss = 0;
-  for (auto x : ans) {
-    anss ^= x;
-  }
-  cout << anss << nl;
+  cout << dp[2 * n] << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }
