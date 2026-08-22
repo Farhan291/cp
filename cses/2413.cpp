@@ -1,4 +1,4 @@
-// Url:
+// Url: https://cses.fi/problemset/task/2413
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -52,22 +52,20 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+  int t;
+  int M = 1e9 + 7;
+  cin >> t;
+  vector<vector<int>> dp(1e6 + 1, vi(3));
+  dp[1][1] = 1;
+  dp[1][2] = 1;
+  for (int i = 2; i <= 1e6; i++) {
+    dp[i][1] = ((dp[i - 1][1] * 4LL) % M + (dp[i - 1][2])) % M;
+    dp[i][2] = ((dp[i - 1][1]) + (dp[i - 1][2] * 2LL) % M) % M;
+  }
+  while (t--) {
+    int n;
+    cin >> n;
+    cout << (dp[n][1] + dp[n][2]) % M << nl;
   }
 }
 
@@ -75,7 +73,7 @@ signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

@@ -1,0 +1,122 @@
+500
+1 1
+aa
+A
+1 1
+bb
+A
+2 1
+ac
+bc
+A
+1 1
+cd
+A
+2 1
+ae
+ce
+A
+2 1
+bf
+cf
+A
+3 1
+ag
+bg
+cg
+A
+1 1
+ah
+B
+1 1
+bi
+B
+2 1
+aj
+bj
+B
+1 1
+ck
+B
+2 1
+al
+cl
+B
+2 1
+bm
+cm
+B
+3 1
+an
+bn
+cn
+B
+1 1
+ao
+C
+1 1
+bp
+C
+2 1
+aq
+bq
+C
+1 1
+cr
+C
+2 1
+as
+cs
+C
+2 1
+bt
+ct
+C
+3 1
+au
+bu
+cu
+C
+1 1
+av
+AA
+1 1
+bw
+AA
+2 1
+ax
+bx
+AA
+1 1
+cy
+AA
+2 1
+az
+cz
+AA
+2 1
+bba
+cba
+AA
+3 1
+abb
+bbb
+cbb
+AA
+1 1
+abc
+AB
+1 1
+bbd
+AB
+2 1
+abe
+bbe
+AB
+1 1
+cbf
+AB
+2 1
+abg
+cbg
+AB

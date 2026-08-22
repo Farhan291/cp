@@ -1,6 +1,5 @@
-// Url:
-// Start:
-// mintemplate
+// Url - https://codeforces.com/problemset/problem/2175/B
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,25 +49,18 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
 void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+  int n, l, r;
+  cin >> n >> l >> r;
+  vi prefxor(n + 1);
+  for (int i = 0; i <= n; i++) {
+    prefxor[i] = i;
   }
+  prefxor[r] = l - 1;
+  for (int i = 0; i < n; i++) {
+    cout << (prefxor[i] ^ prefxor[i + 1]) << " ";
+  }
+  cout << nl;
 }
 
 signed main() {

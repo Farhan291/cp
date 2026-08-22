@@ -1,6 +1,5 @@
-// Url:
-// Start:
-// mintemplate
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
@@ -52,23 +51,26 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+  int n, m;
+  cin >> n >> m;
+  set<char> s;
+  bool y = true;
+  for (int i = 0; i < n; i++) {
+    string t;
+    cin >> t;
+    s.insert(toupper(t[0]));
   }
+  for (int i = 0; i < m; i++) {
+    string t;
+    cin >> t;
+    for (auto &x : t) {
+      if (s.find(x) == s.end()) {
+        y = false;
+      }
+    }
+    s.insert(t[0]);
+  }
+  cout << (y ? "YES" : "NO") << nl;
 }
 
 signed main() {

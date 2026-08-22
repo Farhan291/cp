@@ -1,4 +1,4 @@
-// Url:
+// Url: https://cses.fi/problemset/task/1142/
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,32 +50,46 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+int n;
+vector<int> mincal(vector<int> &v) {
+  vi res(n);
+  stack<pii> s;
+  s.push({-1e9, -1});
+  for (int i = 0; i < n; i++) {
+    while (s.top().first >= v[i])
+      s.pop();
+    res[i] = s.top().second;
+    s.push({v[i], i});
   }
+  return res;
+}
+void Mizuhara() {
+  cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  vi pse = mincal(v);
+  reverse(all(v));
+  vi nse = mincal(v);
+  for (auto &x : nse) {
+    x = n - 1 - x;
+  }
+  reverse(all(nse));
+  reverse(all(v));
+  int ans = 0;
+  for (int i = 0; i < n; i++) {
+    int breath = nse[i] - pse[i] - 1;
+    ans = max(ans, breath * v[i]);
+  }
+  cout << ans << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

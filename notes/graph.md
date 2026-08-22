@@ -4,10 +4,12 @@
 - https://cses.fi/problemset/task/1202/
 - https://cses.fi/problemset/task/1196/
 - https://cses.fi/problemset/task/1195
+- https://codeforces.com/contest/1473/problem/E
 - https://cses.fi/problemset/task/1680/
 - https://www.spoj.com/problems/BUGLIFE/
 - https://leetcode.com/submissions/detail/2065124319/
 - https://leetcode.com/problems/path-with-minimum-effort/description/
+- https://leetcode.com/problems/bricks-falling-when-hit/description/
 
 ## topo order mixed with dp
 

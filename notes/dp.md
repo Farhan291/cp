@@ -3,6 +3,7 @@ best problems
 - https://cses.fi/problemset/task/1746/
 - https://cses.fi/problemset/task/1635
 - https://leetcode.com/problems/dungeon-game/description/
+- https://codeforces.com/contest/2252/problem/B
 
 dp on subsequeunces
 

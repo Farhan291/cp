@@ -1,19 +1,24 @@
-// Url:
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
 // Start:
-// mintemplate
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -52,30 +57,34 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+  int n;
+  cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
+  vi pref(n + 1), suff(n + 1);
+  for (int i = 1; i <= n; i++) {
+    pref[i] = pref[i - 1] + v[i - 1];
+  }
+  suff[n] = v[n - 1];
+  for (int i = n - 1; i > 0; i--) {
+    suff[i] = suff[i + 1] + v[i - 1];
+  }
+  debug(pref, suff);
+  int ans = INT_MAX;
+  for (int i = 0; i < n; i++) {
+    if (i + 2 <= n)
+      ans = min(ans, abs(pref[i + 1] - suff[i + 2]));
+  }
+  cout << ans << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

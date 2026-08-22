@@ -1,4 +1,4 @@
-// Url:
+// Url: https://cses.fi/problemset/task/1623
 // Start:
 // mintemplate
 #include <bits/stdc++.h>
@@ -50,32 +50,36 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-void Mizuhara() {
-  int k;
-  cin >> k;
-  int cnt = 9;     // number of numbers of length len
-  int skipped = 0; // how many number as in decimal we skipped
-  for (int len = 1; true; len++) {
-    if (k > len * cnt) {
-      skipped += cnt; // skip numbers
-      k -= len * cnt; // skip digit
-      cnt *= 10;
-    } else {
-      int left = (k - 1) / len;
-      skipped += left;
-      k -= left * len;
-      cout << to_string(skipped + 1)[k - 1] << nl;
-      return;
-    }
+int n;
+void subset(vector<int> &v, int s, int sum, vector<int> &ans) {
+  if (s == n) {
+    ans.pb(sum);
+    return;
   }
+  subset(v, s + 1, sum + v[s], ans);
+  subset(v, s + 1, sum, ans);
 }
-
+void Mizuhara() {
+  cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  int sum = accumulate(all(v), 0LL);
+  vector<int> ans;
+  subset(v, 0, 0, ans);
+  int a = LONG_LONG_MAX;
+  debug(ans);
+  for (auto &x : ans) {
+    a = min(a, abs(2 * x - sum));
+  }
+  cout << a << nl;
+}
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  cin >> t;
+  // cin >> t;
   while (t--)
     Mizuhara();
 }

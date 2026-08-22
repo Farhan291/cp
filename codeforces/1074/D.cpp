@@ -53,29 +53,30 @@ struct _debug {
 void Mizuhara() {
   int n, m, h;
   cin >> n >> m >> h;
-  vi v(n);
-  vi j(n);
+  vi cur(n), v(n);
   for (int i = 0; i < n; i++) {
-    int x;
-    cin >> x;
-    v[i] = x;
-    j[i] = x;
+    cin >> v[i];
+    cur[i] = v[i];
   }
-  vector<pair<int, int>> v1(m);
+  vi lastupd(n);
+  int lastrest = -1;
   for (int i = 0; i < m; i++) {
-    int x, y;
-    cin >> x >> y;
-    v1[i] = {x, y};
-  }
-  for (auto i : v1) {
-    v[i.first - 1] += i.second;
-    if (v[i.first - 1] > h) {
-      v = j;
+    int b, c;
+    cin >> b >> c;
+    b--;
+    if (lastupd[b] < lastrest)
+      cur[b] = v[b];
+    cur[b] += c;
+    if (cur[b] > h) {
+      lastrest = i;
+      cur[b] = v[b];
     }
-    debug(v, j, i);
+    lastupd[b] = i;
   }
-  for (auto i : v) {
-    cout << i << " ";
+  for (int i = 0; i < n; i++) {
+    if (lastupd[i] < lastrest)
+      cur[i] = v[i];
+    cout << cur[i] << " ";
   }
   cout << nl;
 }

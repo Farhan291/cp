@@ -54,49 +54,30 @@ struct _debug {
 void Mizuhara() {
   int n, m;
   cin >> n >> m;
-  vi p(n);
-  vi c(m);
+
+  multiset<int> p;
+
   for (int i = 0; i < n; i++) {
-    cin >> p[i];
+    int x;
+    cin >> x;
+    p.insert(x);
   }
+
   for (int i = 0; i < m; i++) {
-    cin >> c[i];
-  }
-  sort(all(p));
-  debug(p);
-  int i = 0;
-  int j = 0;
-  vi ans;
-  int temp = -1;
-  while (i < n && j < m) {
-    if (p[i] <= c[j]) {
-      temp = c[j] - p[i];
-      debug(p[i], c[j], i, j, temp);
-      i++;
+    int x;
+    cin >> x;
+
+    auto it = p.upper_bound(x);
+
+    if (it == p.begin()) {
+      cout << -1 << nl;
     } else {
-      if (temp != -1) {
-        ans.pb(c[j] - temp);
-        debug(c[j] - temp);
-        temp = -1;
-        j++;
-      } else {
-        ans.pb(-1);
-        j++;
-      }
+      --it;
+      cout << *it << nl;
+      p.erase(it);
     }
   }
-  ans.pb(c[j] - temp);
-  j++;
-  while (j < m) {
-    ans.pb(-1);
-    j++;
-  }
-  debug(ans);
-  for (auto i : ans) {
-    cout << i << nl;
-  }
 }
-
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
