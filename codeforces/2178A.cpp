@@ -1,4 +1,5 @@
 // Url -https://codeforces.com/contest/2178/problem/A
+// Date: 30/12/25
 // codeforces
 #include <bits/stdc++.h>
 

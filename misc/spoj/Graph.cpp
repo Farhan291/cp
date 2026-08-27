@@ -1,5 +1,5 @@
 // Url: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_A
-// Start:
+// Start: 05/07/26
 // mintemplate
 #include <bits/stdc++.h>
 

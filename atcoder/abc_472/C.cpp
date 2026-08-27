@@ -2,7 +2,7 @@
 // Contest:
 // URL:
 // Time Limit:
-// Start:
+// Start: 22/08/26
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -63,17 +63,17 @@ void Mizuhara() {
   for (int i = 0; i < n; i++) {
     cin >> v[i];
   }
-  int prev = 0;
   int sum = 0;
   for (int i = 0; i < n; i++) {
-    if (v[i] + sum > k) {
-      cout << "No" << " ";
-      if (i - prev > k) {
-        prev = i + 1;
-      }
-    } else {
+    if (i >= m) {
+      sum -= v[i - m];
+    }
+    if (sum + v[i] <= k) {
       sum += v[i];
-      prev = i;
+      cout << "Yes" << nl;
+    } else {
+      v[i] = 0;
+      cout << "No" << nl;
     }
   }
 }

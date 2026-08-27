@@ -1,4 +1,5 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/F
+// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/B
+// Date: 17/03/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -50,24 +51,17 @@ struct _debug {
 #define debug(x...)
 #endif
 
-void print(vi &v, int n) {
-  if (n < 0) {
+void print(int n) {
+  if (n == 0) {
     return;
   }
-  if (!(n & 1)) {
-    cout << v[n] << " ";
-  }
-  print(v, n - 1);
+  print(n - 1);
+  cout << n << nl;
 }
-
 void Mizuhara() {
   int n;
   cin >> n;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  print(v, n - 1);
+  print(n);
 }
 
 signed main() {

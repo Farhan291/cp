@@ -1,3 +1,6 @@
+// Url: 
+// Start: 13/08/26
+// mintemplate
 #include <bits/stdc++.h>
 
 const int n = 1e6 + 1;

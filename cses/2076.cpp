@@ -1,5 +1,6 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/B
-// codeforces
+// Url:
+// Start: 26/08/26
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,17 +51,55 @@ struct _debug {
 #define debug(x...)
 #endif
 
-void print(int n) {
-  if (n == 0) {
-    return;
+vector<vector<int>> g;
+vector<bool> vis;
+vector<int> parent, depth;
+// dp[u] represent the number of backedges from u rooted subtree to u ancestor
+vector<int> dp;
+vector<pii> bridges;
+
+int dfs(int u, int p) {
+  vis[u] = true;
+  for (auto v : g[u]) {
+    if (v == p)
+      continue;
+    if (!vis[v]) {
+      // u->v is a span edge
+      depth[v] = depth[u] + 1;
+      parent[v] = u;
+      int c = dfs(v, u);
+      dp[u] += c;
+      if (c == 0) {
+        bridges.pb({u, v});
+      }
+    } else if (depth[u] > depth[v]) {
+      // u->v is a back edge , both u->v and v->u is backedge but we need to
+      // traverse only once so we choose where u is child and v is ancestor
+      dp[u]++;
+      dp[v]--;
+    }
   }
-  print(n - 1);
-  cout << n << nl;
+  return dp[u];
 }
 void Mizuhara() {
-  int n;
-  cin >> n;
-  print(n);
+  int n, m;
+  cin >> n >> m;
+  g.resize(n + 1);
+  vis.resize(n + 1, false);
+  parent.resize(n + 1);
+  depth.resize(n + 1);
+  dp.resize(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    g[v].pb(u);
+  }
+  dfs(1, 1);
+  cout << sz(bridges) << nl;
+  for (auto &[u, v] : bridges) {
+    cout << u << " " << v << nl;
+  }
 }
 
 signed main() {

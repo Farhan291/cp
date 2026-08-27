@@ -1,4 +1,5 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/C
+// Url - https://codeforces.com/group/7Dn3ObOpau/contest/503852/problem/A
+// Date: 25/08/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -50,25 +51,65 @@ struct _debug {
 #define debug(x...)
 #endif
 
-void print(int n) {
-  if (n == 1) {
-    cout << 1 << nl;
-    return;
+int sum(vector<int> &arr, int i) {
+  int s = 0;
+  while (i > 0) {
+    s += arr[i];
+    i -= (i & -i);
   }
-  cout << n << " ";
-  print(n - 1);
+  return s;
 }
+void update(int i, int v, vector<int> &arr) {
+  while (i <= sz(arr)) {
+    arr[i] += v;
+    i += (i & -i);
+  }
+}
+
 void Mizuhara() {
   int n;
   cin >> n;
-  print(n);
+  vector<pii> v;
+  for (int i = 0; i < n; i++) {
+    int x;
+    cin >> x;
+    v.pb({x, i + 1});
+  }
+  int q;
+  cin >> q;
+  vector<tuple<int, int, int, int>> qs(q);
+  for (int i = 0; i < q; i++) {
+    int l, r, x;
+    cin >> l >> r >> x;
+    qs[i] = {l, r, x, i};
+  }
+  sort(all(v));
+  sort(all(qs), [](tuple<int, int, int, int> &a, tuple<int, int, int, int> &b) {
+    return get<2>(a) < get<2>(b);
+  });
+  int ptr = 0;
+  vector<int> arr(n + 1);
+  vector<int> ans(q + 1, -1);
+  for (auto [l, r, x, i] : qs) {
+    while (ptr < n && v[ptr].first <= x) {
+      auto [val, i] = v[ptr];
+      update(i, val, arr);
+      ptr++;
+    }
+    ans[i] = sum(arr, r) - sum(arr, l - 1);
+  }
+  for (auto &x : ans) {
+    if (x != -1) {
+      cout << x << nl;
+    }
+  }
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

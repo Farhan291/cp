@@ -1,4 +1,5 @@
 // Url - https://codeforces.com/problemset/problem/292/B?locale=en
+// Date: 05/07/26
 // codeforces
 #include <bits/stdc++.h>
 using namespace std;

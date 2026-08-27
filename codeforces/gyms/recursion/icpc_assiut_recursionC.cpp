@@ -1,4 +1,5 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/O
+// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/C
+// Date: 17/03/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -50,19 +51,18 @@ struct _debug {
 #define debug(x...)
 #endif
 
-int fibo(int n) {
+void print(int n) {
   if (n == 1) {
-    return 0;
-  } else if (n == 2) {
-    return 1;
+    cout << 1 << nl;
+    return;
   }
-
-  return fibo(n - 1) + fibo(n - 2);
+  cout << n << " ";
+  print(n - 1);
 }
 void Mizuhara() {
   int n;
   cin >> n;
-  cout << fibo(n) << nl;
+  print(n);
 }
 
 signed main() {

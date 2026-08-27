@@ -1,4 +1,5 @@
 // https://atcoder.jp/contests/arc087/tasks/arc087_a?lang=en
+// Date: 21/10/25
 #include <algorithm>
 #include <bits/stdc++.h>
 using namespace std;

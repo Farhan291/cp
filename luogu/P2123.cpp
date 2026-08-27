@@ -1,4 +1,5 @@
 // Url -https://www.luogu.com.cn/problem/P2123
+// Date: 31/12/25
 // codeforces
 #include <bits/stdc++.h>
 

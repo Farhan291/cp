@@ -2,7 +2,7 @@
 // Contest:
 // URL: https://atcoder.jp/contests/dp/tasks/dp_b
 // Time Limit:
-// Start:
+// Start: 15/07/26
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>

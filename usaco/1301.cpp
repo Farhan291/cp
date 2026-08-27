@@ -1,4 +1,5 @@
 // Url - https://usaco.org/index.php?page=viewproblem2&cpid=1301
+// Date: 22/10/25
 // codeforces
 #include <bits/stdc++.h>
 

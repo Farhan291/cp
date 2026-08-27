@@ -1,5 +1,5 @@
 // Url: https://www.spoj.com/problems/LCASQ/
-// Start:
+// Start: 09/08/26
 // mintemplate
 #include <bits/stdc++.h>
 

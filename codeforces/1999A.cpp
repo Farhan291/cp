@@ -1,4 +1,5 @@
 // https://codeforces.com/problemset/problem/1999/A
+// Date: 21/10/25
 
 #include <bits/stdc++.h>
 using namespace std;

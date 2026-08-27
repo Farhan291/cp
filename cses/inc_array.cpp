@@ -1,3 +1,6 @@
+// Url: 
+// Start: 13/08/26
+// mintemplate
 #include <bits/stdc++.h>
 int main(void) {
   int n;

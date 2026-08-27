@@ -1,4 +1,5 @@
 // 1765M
+// Date: 21/10/25
 #include <bits/stdc++.h>
 #include <cmath>
 #include <numeric>

@@ -1,4 +1,5 @@
 // Url - https://www.spoj.com/problems/BUGLIFE/
+// Date: 10/07/26
 // codeforces
 #include <bits/stdc++.h>
 

@@ -1,5 +1,5 @@
 // Url: https://www.spoj.com/problems/FACT0/
-// Start:
+// Start: 10/07/26
 // mintemplate
 #include <bits/stdc++.h>
 

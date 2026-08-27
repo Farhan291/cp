@@ -1,4 +1,5 @@
 // Url - https://codeforces.com/contest/2191/problem/array
+// Date: 16/02/26
 // codeforces
 #include <bits/stdc++.h>
 

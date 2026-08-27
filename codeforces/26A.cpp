@@ -1,4 +1,5 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/R
+// Url - https://codeforces.com/problemset/problem/26/A
+// Date: 27/08/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -49,27 +50,30 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-bool check(vi &v, int l, int r) {
-  if (l >= r)
-    return true;
-  if (v[l] != v[r])
-    return false;
-  return check(v, l + 1, r - 1);
+constexpr int M = 3001;
+vector<vector<int>> v(M);
+vector<bool> sieve(M, true);
+void sie() {
+  sieve[0] = sieve[1] = false;
+  for (int i = 2; i < M; i++) {
+    if (sieve[i]) {
+      for (int j = 2 * i; j < M; j += i) {
+        sieve[j] = false;
+        v[j].pb(i);
+      }
+    }
+  }
 }
-
 void Mizuhara() {
   int n;
   cin >> n;
-  vi v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
+  int ans = 0;
+  sie();
+  for (int i = 1; i <= n; i++) {
+    if (sz(v[i]) == 2)
+      ans++;
   }
-  if (check(v, 0, n - 1)) {
-    cout << "YES" << nl;
-  } else {
-    cout << "NO" << nl;
-  }
+  cout << ans << nl;
 }
 
 signed main() {

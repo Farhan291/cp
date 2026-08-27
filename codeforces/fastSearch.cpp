@@ -1,4 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/6/1/practice/contest/283911/problem/D
+// Date: 18/10/25
 #include <bits/stdc++.h>
 using namespace std;
 

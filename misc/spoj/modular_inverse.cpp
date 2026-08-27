@@ -1,5 +1,5 @@
 // Url: https://eolymp.com/en/problems/9606
-// Start:
+// Start: 03/02/26
 // mintemplate
 #include <bits/stdc++.h>
 

@@ -1,4 +1,5 @@
 //https://codeforces.com/problemset/problem/1730/B 
+// Date: 18/10/25
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;

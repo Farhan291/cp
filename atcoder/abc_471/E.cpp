@@ -2,7 +2,7 @@
 // Contest:
 // URL:
 // Time Limit:
-// Start:
+// Start: 22/08/26
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -56,11 +56,15 @@ struct _debug {
 #define debug(x...)
 #endif
 int M = 998244353;
-
+vector<int> fac, inv;
 int mul(int a, int b) { return (a * b) % M; }
 int add(int a, int b) {
   a += b;
-  return (a > M) ? a -= M : a;
+  return (a >= M) ? a -= M : a;
+}
+int sub(int a, int b) {
+  a -= b;
+  return (a < 0) ? a += M : a;
 }
 int pow(int a, int b) {
   int res = 1;
@@ -69,18 +73,27 @@ int pow(int a, int b) {
     if (b & 1)
       res = mul(res, a);
     a = mul(a, a);
-    b >>= 2;
+    b >>= 1;
   }
   return res;
 }
 int myinv(int a) { return pow(a, M - 2); }
+int nCr(int n, int r) {
+  if (r < 0 || r > n || n < 0)
+    return 0;
+  return mul(fac[n], mul(inv[n - r], inv[r]));
+}
 void Mizuhara() {
-  int n;
-  cin >> n;
+  int n, k;
+  cin >> n >> k;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
 
-  vector<int> fac(n + 1, 1);
+  fac.resize(n + 1, 1);
 
-  vector<int> inv(n + 1);
+  inv.resize(n + 1);
   for (int i = 2; i <= n; i++) {
     fac[i] = mul(fac[i - 1], i);
   }
@@ -88,6 +101,16 @@ void Mizuhara() {
   for (int i = n; i > 0; i--) {
     inv[i - 1] = mul(inv[i], i);
   }
+
+  int sqsum = 0;
+  int sum = 0;
+  for (int i = 0; i < n; i++) {
+    sqsum = add(sqsum, mul(v[i], v[i]));
+    sum = add(sum, v[i]);
+  }
+  int first = mul(sqsum, nCr(n - 1, k - 1));
+  int second = mul(nCr(n - 2, k - 2), sub(mul(sum, sum), sqsum));
+  cout << add(first, second) << nl;
 }
 
 signed main() {

@@ -1,4 +1,5 @@
 // https://www.hackerrank.com/challenges/vector-erase/problem
+// Date: 21/10/25
 #include <bits/stdc++.h>
 using namespace std;
 int main() {

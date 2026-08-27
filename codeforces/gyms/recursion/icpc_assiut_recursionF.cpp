@@ -1,5 +1,5 @@
-// Url -
-// https://codeforces.com/edu/course/2/lesson/7/1/practice/contest/289390/problem/B
+// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/F
+// Date: 18/03/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -50,28 +50,25 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-vi parent(3e5 + 5);
-void make(int x) { parent[x] = x; }
-int find(int x) {
-  if (parent[x] == x)
-    return x;
-  return parent[x] = find(parent[x]);
+
+void print(vi &v, int n) {
+  if (n < 0) {
+    return;
+  }
+  if (!(n & 1)) {
+    cout << v[n] << " ";
+  }
+  print(v, n - 1);
 }
+
 void Mizuhara() {
   int n;
   cin >> n;
-  for (int i = 1; i <= n; i++) {
-    make(i);
-  }
-  parent[n + 1] = find(1);
+  vi v(n);
   for (int i = 0; i < n; i++) {
-    int x;
-    cin >> x;
-    int pos = find(x);
-    parent[pos] = find(pos + 1);
-    parent[n + 1] = find(1);
-    cout << pos << " ";
+    cin >> v[i];
   }
+  print(v, n - 1);
 }
 
 signed main() {

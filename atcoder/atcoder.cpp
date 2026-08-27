@@ -1,18 +1,24 @@
-// Url - https://codeforces.com/group/MWSDmqGsZm/contest/223339/problem/A
-// codeforces
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
+// Start: 27/08/26
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,18 +56,36 @@ struct _debug {
 #define debug(x...)
 #endif
 
-void print(int n) {
-  if (n == 0) {
-    return;
-  }
-
-  cout << "I love Recursion" << nl;
-  print(n - 1);
-}
 void Mizuhara() {
-  int n;
-  cin >> n;
-  print(n);
+  int n, k, m;
+  cin >> n >> k >> m;
+  vi s(n);
+  vi d(m);
+  vector<pii> idk(n);
+  for (int i = 0; i < n; i++) {
+    cin >> s[i];
+  }
+  for (int i = 0; i < m; i++) {
+    int x;
+    cin >> x;
+    s[x - 1] = -1;
+  }
+  for (int i = 0; i < n; i++) {
+    idk[i] = {s[i], i};
+  }
+  sort(all(idk), [](auto a, auto b) {
+    if (a.first != b.first)
+      return a.first > b.first;
+    return a.second < b.second;
+  });
+  debug(idk);
+  for (int i = 0; i < k; i++) {
+    if (idk[i].second == 0) {
+      cout << "Yes" << nl;
+      return;
+    }
+  }
+  cout << "No" << nl;
 }
 
 signed main() {
