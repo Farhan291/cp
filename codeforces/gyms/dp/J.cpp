@@ -1,5 +1,4 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,27 +50,28 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
+void Mizuhara() {
+  int n;
+  cin >> n;
+  if (n == 0) {
+    cout << 1 << nl;
+    return;
+  }
+  // dp[n][i]  a->0 b->1 c->2
+  vector<vector<int>> dp(n, vi(3));
+  for (int i = 0; i < 3; i++) {
+    dp[0][i] = 1;
+  }
+  for (int i = 1; i < n; i++) {
+    for (int j : {0, 1, 2}) {
+      for (int k : {0, 1, 2}) {
+        if (j == 0 && k == 1)
+          continue;
+        dp[i][k] += dp[i - 1][j];
       }
     }
   }
-}
-void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
-    }
-  }
+  cout << dp[n - 1][0] + dp[n - 1][1] + dp[n - 1][2] << nl;
 }
 
 signed main() {

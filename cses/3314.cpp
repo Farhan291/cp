@@ -1,6 +1,6 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
-// codeforces
+// Url:  https://cses.fi/problemset/task/3314
+// Start: 30/08/26
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,28 +50,55 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
+const int INF = LONG_LONG_MAX;
+int n;
+vector<int> m;
+vector<int> dp;
+vector<int> pse;
+vector<int> nse;
+vector<int> res() {
+  stack<pii> st;
+  vector<int> r(n);
+  st.push({INF, -1});
+  for (int i = 0; i < n; i++) {
+    while (!st.empty() && st.top().first <= m[i])
+      st.pop();
+    r[i] = st.top().second;
+    st.push({m[i], i});
   }
+  return r;
+}
+int dfs(int x) {
+  if (dp[x] != -1)
+    return dp[x];
+  dp[x] = 1;
+  if (pse[x] != -1)
+    dp[x] = max(dp[x], dfs(pse[x]) + 1);
+  dp[x] = max(dp[x], dfs(nse[x]) + 1);
+  return dp[x];
 }
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
-    }
+  cin >> n;
+  m.resize(n);
+  for (int i = 0; i < n; i++) {
+    cin >> m[i];
   }
+  pse = res();
+  reverse(all(m));
+  nse = res();
+  for (auto &x : nse) {
+    x = n - 1 - x;
+  }
+  reverse(all(nse));
+  reverse(all(m));
+  dp.resize(n + 1, -1);
+  dp[n] = 0;
+  for (int i = 0; i < n; i++)
+    dfs(i);
+  debug(nse);
+  debug(pse);
+  debug(dp);
+  cout << *max_element(all(dp));
 }
 
 signed main() {

@@ -1,6 +1,6 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
-// codeforces
+// Url: https://cses.fi/problemset/task/2177
+// Start: 28/08/26
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,27 +50,60 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
+vector<vector<int>> g;
+vector<bool> vis;
+vector<int> parent, depth, dp;
+vector<pii> ans;
+bool bridge = false;
+int dfs(int u, int p) {
+  vis[u] = true;
+  for (auto v : g[u]) {
+    if (v == p)
+      continue;
+    if (!vis[v]) {
+      parent[v] = u;
+      depth[v] = depth[u] + 1;
+      int c = dfs(v, u);
+      ans.pb({u, v});
+      dp[u] += c;
+      if (c == 0)
+        bridge = true;
+    } else if (depth[u] > depth[v]) {
+      dp[u]++;
+      dp[v]--;
+      ans.pb({u, v});
     }
   }
+  return dp[u];
 }
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  int n, m;
+  cin >> n >> m;
+  g.resize(n + 1);
+  vis.resize(n + 1);
+  parent.resize(n + 1);
+  depth.resize(n + 1);
+  dp.resize(n + 1);
+
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    g[v].pb(u);
+  }
+  dfs(1, 1);
+  for (int i = 1; i <= n; i++) {
+    if (!vis[i]) {
+      cout << "IMPOSSIBLE" << nl;
+      return;
     }
+  }
+  if (bridge) {
+    cout << "IMPOSSIBLE" << nl;
+    return;
+  }
+  for (auto &[u, v] : ans) {
+    cout << u << " " << v << nl;
   }
 }
 

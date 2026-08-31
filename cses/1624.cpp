@@ -1,6 +1,6 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
-// codeforces
+// Url: https://cses.fi/problemset/task/1624
+// Start: 30/08/26
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -50,28 +50,37 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
+vector<vector<char>> g;
+vector<bool> col(8, false);
+vector<bool> dia(15, false);
+vector<bool> dia2(15, false);
+int ans = 0;
+void queen(int row) {
+  if (row == 8) {
+    ans++;
+    return;
+  }
+  for (int c = 0; c < 9; c++) {
+    if (g[row][c] == '.' && !col[c] && !dia[row + c] && !dia2[row - c + 7]) {
+      col[c] = true;
+      dia[row + c] = true;
+      dia2[row - c + 7] = true;
+      queen(row + 1);
+      col[c] = false;
+      dia[row + c] = false;
+      dia2[row - c + 7] = false;
     }
   }
 }
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  g.resize(8, vector<char>(8));
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      cin >> g[i][j];
     }
   }
+  queen(0);
+  cout << ans << nl;
 }
 
 signed main() {

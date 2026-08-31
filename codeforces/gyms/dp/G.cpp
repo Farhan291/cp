@@ -1,5 +1,4 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,32 +50,48 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
+void Mizuhara() {
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> g(n + 1);
+  vector<int> indeg(n + 1);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+    indeg[v]++;
+  }
+  queue<int> q;
+  vector<int> topo;
+  for (int i = 1; i <= n; i++) {
+    if (indeg[i] == 0) {
+      q.push(i);
+    }
+  }
+  while (!q.empty()) {
+    int u = q.front();
+    topo.pb(u);
+    q.pop();
+    for (auto v : g[u]) {
+      if (--indeg[v] == 0) {
+        q.push(v);
       }
     }
   }
-}
-void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  // dp[i] represent longest path till ith node
+  vector<int> dp(n + 1, 0);
+  for (auto &u : topo) {
+    for (auto &v : g[u]) {
+      dp[v] = max(dp[v], dp[u] + 1);
     }
   }
+  cout << *max_element(all(dp));
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
+  freopen("longpath.in", "r", stdin);
+  freopen("longpath.out", "w", stdout);
   int t = 1;
   // cin >> t;
   while (t--)

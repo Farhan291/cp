@@ -1,6 +1,6 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
-// codeforces
+// Url: https://judge.yosupo.jp/problem/scc
+// Start:
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
@@ -51,26 +51,73 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
+struct tarjan {
+  vector<int> st;
+  vector<int> roots;
+  int timer = 0;
+  vector<int> tin;
+  vector<int> tlow;
+
+  void dfs(int u, vector<vector<int>> &g, vector<vector<int>> &comp) {
+    tlow[u] = tin[u] = timer++;
+    st.push_back(u);
+
+    for (auto v : g[u]) {
+      if (tin[v] == -1) { // tree-edge
+        dfs(v, g, comp);
+        tlow[u] = min(tlow[v], tlow[u]);
+      } else if (roots[v] == -1) { // back-edge
+        tlow[u] = min(tin[v], tlow[u]);
+      }
+    }
+
+    if (tlow[u] == tin[u]) {
+      comp.push_back({u});
+      while (true) {
+        int v = st.back();
+        st.pop_back();
+        roots[v] = u;
+        if (u == v)
+          break;
+        comp.back().push_back(v);
       }
     }
   }
-}
-void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+
+  vector<vector<int>> get_scc(vector<vector<int>> &g) {
+    int n = (int)g.size();
+    st.clear();
+    roots.assign(n, -1);
+    tin.assign(n, -1);
+    tlow.assign(n, -1);
+    vector<vector<int>> c;
+    for (int u = 0; u < n; u++) {
+      if (tin[u] == -1) {
+        dfs(u, g, c);
+      }
     }
+    reverse(all(c));
+    return c;
+  }
+};
+tarjan t;
+void Mizuhara() {
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> g(n);
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].pb(v);
+  }
+  vector<vector<int>> scc = t.get_scc(g);
+  cout << sz(scc) << nl;
+  for (auto &c : scc) {
+    cout << sz(c) << " ";
+    for (auto &u : c) {
+      cout << u << " ";
+    }
+    cout << nl;
   }
 }
 

@@ -1,5 +1,4 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,32 +50,28 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-}
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  int n, m;
+  cin >> n >> m;
+
+  // dp[i][j] represent number of ways to reach this cell
+  vector<vector<int>> dp(n, vi(m));
+  dp[0][0] = 1;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (i - 2 >= 0 && j - 1 >= 0)
+        dp[i][j] += dp[i - 2][j - 1];
+      if (i - 1 >= 0 && j - 2 >= 0)
+        dp[i][j] += dp[i - 1][j - 2];
     }
   }
+  cout << dp[n - 1][m - 1];
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
+  freopen("knight.in", "r", stdin);
+  freopen("knight.out", "w", stdout);
   int t = 1;
   // cin >> t;
   while (t--)

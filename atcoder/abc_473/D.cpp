@@ -1,19 +1,24 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
-// codeforces
+// Problem:
+// Contest:
+// URL:
+// Time Limit:
+// Start:
+// atcoder
+#include <atcoder/all>
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define pii pair<int, int>
 #define vi vector<int>
+#define pii pair<int, int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
+using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -50,28 +55,29 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
+int n;
+vector<int> v;
+void dfs(int idx, int rem) {
+  if (idx == n) {
+    if (rem % n != 0)
+      return;
+    v[n] = rem / n;
+    for (int i = 1; i <= n; i++)
+      cout << v[i] << " ";
+    cout << nl;
+    return;
+  }
+  for (int i = 0; i * idx <= rem; i++) {
+    v[idx] = i;
+    dfs(idx + 1, rem - idx * i);
   }
 }
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
-    }
-  }
+  int k;
+  cin >> n >> k;
+  v.resize(n + 1);
+  dfs(1, k);
+  debug(v);
 }
 
 signed main() {

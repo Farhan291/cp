@@ -1,5 +1,4 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,32 +50,30 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-}
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  int n;
+  cin >> n;
+  vector<vector<int>> v(n + 1, vi(n + 1));
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j < i + 1; j++) {
+      cin >> v[i][j];
     }
   }
+  int INF = 1e5;
+  vector<vector<int>> dp(n + 1, vi(n + 1, -INF));
+  dp[0][0] = 0;
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1]) + v[i][j];
+    }
+  }
+  cout << *max_element(all(dp[n]));
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
+  // freopen("slalom.in", "r", stdin);
+  // freopen("slalom.out", "w", stdout);
   int t = 1;
   // cin >> t;
   while (t--)

@@ -1,5 +1,4 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url -
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,32 +50,32 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-}
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
+  int n;
+  cin >> n;
+  string s;
+  cin >> s;
+
+  vector<int> dp(n, -1);
+  dp[0] = 0;
+
+  for (int i = 1; i < n; i++) {
+    if (s[i] == 'w')
+      continue;
+    for (int j : {1, 3, 5}) {
+      if (i - j >= 0 && dp[i - j] != -1)
+        dp[i] = max(dp[i], dp[i - j]);
     }
+    if (dp[i] != -1 && s[i] == '"')
+      dp[i]++;
   }
+  cout << dp[n - 1] << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
+  freopen("lepus.in", "r", stdin);
+  freopen("lepus.out", "w", stdout);
   int t = 1;
   // cin >> t;
   while (t--)

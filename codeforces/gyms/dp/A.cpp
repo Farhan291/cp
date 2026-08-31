@@ -1,5 +1,5 @@
-// Url - https://www.spoj.com/problems/TDPRIMES/
-// Date: 10/07/26
+// Url - https://codeforces.com/gym/100135
+// date - 29/08/26
 // codeforces
 #include <bits/stdc++.h>
 
@@ -51,32 +51,30 @@ struct _debug {
 #define debug(x...)
 #endif
 
-vector<bool> prime(1e8 + 1, true);
-void precompute() {
-  prime[0] = prime[1] = false;
-  for (int i = 2; i * i < 1e8; i++) {
-    if (prime[i]) {
-      for (int j = i * i; j < 1e8; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-}
 void Mizuhara() {
-  precompute();
-  int cnt = 0;
-  for (int i = 2; i < 1e8; i++) {
-    if (prime[i]) {
-      if (cnt % 100 == 0)
-        cout << i << '\n';
-      cnt++;
-    }
+  int n;
+  cin >> n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
   }
+  vector<int> dp(n);
+  dp[0] = v[0];
+  if (n == 1) {
+    cout << v[0] << nl;
+    return;
+  }
+  dp[1] = max(v[0] + v[1], v[1]);
+  for (int i = 2; i < n; i++) {
+    dp[i] = max(dp[i - 1] + v[i], dp[i - 2] + v[i]);
+  }
+  cout << dp[n - 1] << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
-  // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
+  freopen("ladder.in", "r", stdin);
+  freopen("ladder.out", "w", stdout);
   int t = 1;
   // cin >> t;
   while (t--)
