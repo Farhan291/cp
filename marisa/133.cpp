@@ -1,24 +1,19 @@
-// Problem: A
-// Contest: abc_439
-// URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
-// atcoder
-#include <atcoder/all>
+// Url: https://marisaoj.com/problem/133
+// Start: 05/09/26
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define vi vector<int>
 #define pii pair<int, int>
+#define vi vector<int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
-using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -55,12 +50,38 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
+struct DSU {
+  vector<int> parent;
+  DSU(int n) {
+    parent.resize(n + 2);
+    for (int i = 1; i <= n + 1; i++) {
+      parent[i] = i;
+    }
+  }
+  int find(int x) {
+    if (parent[x] == x)
+      return x;
+    else
+      return parent[x] = find(parent[x]);
+  }
+  void occupy(int x) { parent[x] = find(x + 1); }
+};
 void Mizuhara() {
   int n;
   cin >> n;
-  int ans = (1 << n) - 2 * n;
-  cout << ans << nl;
+  DSU d(n);
+  for (int i = 0; i < n; i++) {
+    int x;
+    cin >> x;
+    int s = d.find(x);
+    if (s == n + 1) {
+      cout << d.find(1) << " ";
+      d.occupy(d.find(1));
+    } else {
+      cout << s << " ";
+      d.occupy(s);
+    }
+  }
 }
 
 signed main() {

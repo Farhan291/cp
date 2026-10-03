@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start:
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -57,9 +57,14 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
+  string s;
+  cin >> s;
+  string ans;
+  for (int i = 0; i < sz(s); i++) {
+    ans += s[i];
+    ans += 'o';
+  }
+  ans.pop_back();
   cout << ans << nl;
 }
 

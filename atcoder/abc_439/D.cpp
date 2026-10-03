@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start: 03/01/26
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -55,11 +55,29 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
 void Mizuhara() {
   int n;
   cin >> n;
-  int ans = (1 << n) - 2 * n;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  int ans = 0;
+  map<int, int> l, r;
+  for (int i = 0; i < n; i++) {
+    if (v[i] % 5 == 0) {
+      int t = v[i] / 5;
+      ans += (l[7 * t] * l[3 * t]);
+    }
+    l[v[i]]++;
+  }
+  for (int i = n - 1; i >= 0; i--) {
+    if (v[i] % 5 == 0) {
+      int t = v[i] / 5;
+      ans += (r[7 * t] * r[3 * t]);
+    }
+    r[v[i]]++;
+  }
   cout << ans << nl;
 }
 

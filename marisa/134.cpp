@@ -1,24 +1,19 @@
-// Problem: A
-// Contest: abc_439
-// URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
-// atcoder
-#include <atcoder/all>
+// Url: https://marisaoj.com/problem/134
+// Start:
+// mintemplate
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define vi vector<int>
 #define pii pair<int, int>
+#define vi vector<int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
-using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -55,11 +50,51 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
-
+struct DSU {
+  vector<int> parent;
+  vector<int> sizes;
+  DSU(int n) {
+    parent.resize(n + 1);
+    sizes.resize(n + 1, 1);
+    for (int i = 1; i <= n; i++) {
+      parent[i] = i;
+    }
+  }
+  int find(int x) {
+    if (parent[x] == x)
+      return x;
+    else
+      return parent[x] = find(parent[x]);
+  }
+  bool merge(int a, int b) {
+    int ra = find(a);
+    int rb = find(b);
+    if (sizes[ra] < sizes[rb])
+      swap(ra, rb);
+    if (ra == rb)
+      return false;
+    parent[rb] = ra;
+    sizes[ra] += sizes[rb];
+    return true;
+  }
+  int size(int x) { return sizes[find(x)]; }
+};
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
+  int n, m;
+  cin >> n >> m;
+  DSU d(n);
+  int ans = 0;
+  vector<tuple<int, int, int>> g;
+  for (int i = 0; i < m; i++) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g.pb({u, v, w});
+  }
+  sort(all(g), [](auto a, auto b) { return get<2>(a) < get<2>(b); });
+  for (auto &[u, v, w] : g) {
+    if (d.merge(u, v))
+      ans += w;
+  }
   cout << ans << nl;
 }
 

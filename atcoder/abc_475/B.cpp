@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start:
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -59,8 +59,25 @@ struct _debug {
 void Mizuhara() {
   int n;
   cin >> n;
-  int ans = (1 << n) - 2 * n;
-  cout << ans << nl;
+  vi v(n);
+  vi cha(3);
+
+  for (int i = 0; i < n; i++) {
+    int x;
+    cin >> x;
+    if (x % 1000 == 0) {
+      continue;
+    }
+    int paid = ((x / 1000) + 1) * 1000;
+    int rest = paid - x;
+    cha[2] += rest / 100;
+    cha[1] += (rest - (rest / 100) * 100) / 10;
+    cha[0] += rest % 10;
+    debug(paid, rest, cha);
+  }
+  for (auto &x : cha) {
+    cout << x << " ";
+  }
 }
 
 signed main() {

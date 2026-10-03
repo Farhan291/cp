@@ -61,7 +61,7 @@ void Mizuhara() {
   cin >> n;
   int num = n;
   int sum = 0;
-  vi v;
+  set<int> s;
   while (1) {
     while (num > 0) {
       int d = num % 10;
@@ -72,17 +72,15 @@ void Mizuhara() {
       cout << "Yes";
       return;
     }
-    if (find(all(v), sum) != v.end()) {
+    if (s.find(sum) != s.end()) {
       cerr << "i";
-      debug(sum);
       cout << "No";
       return;
     } else {
-      v.pb(sum);
+      s.insert(sum);
       num = sum;
       sum = 0;
     }
-    debug(sum, num, v);
   }
   cout << "Yes";
 }

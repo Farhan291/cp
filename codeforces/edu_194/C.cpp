@@ -1,24 +1,18 @@
-// Problem: A
-// Contest: abc_439
-// URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
-// atcoder
-#include <atcoder/all>
+// Url -
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define vi vector<int>
 #define pii pair<int, int>
+#define vi vector<int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
-using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -57,17 +51,29 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
-  cout << ans << nl;
+  int x, y;
+  cin >> x >> y;
+  int best = INT_MAX;
+  vector<int> pref(x + 1);
+  vector<int> steps(x + 1);
+  for (int i = 0; i <= x; i++) {
+    pref[i] = (x - i + y) ^ i;
+    steps[i] = x - i;
+  }
+  int maxi = *max_element(all(pref));
+  for (int i = 0; i <= x; i++) {
+    if (pref[i] == maxi) {
+      best = min(best, steps[i]);
+    }
+  }
+  cout << maxi << " " << best << nl;
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

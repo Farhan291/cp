@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start:
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -51,15 +51,89 @@ struct _debug {
       cerr << "]\n";
   }
 };
+
 #define debug(x...) cerr << "[" << #x << "] = [", _debug::_print(x)
 #else
 #define debug(x...)
 #endif
 
+struct DSU {
+
+  vector<int> parent, sizes;
+  DSU(int n) {
+    parent.resize(n);
+    sizes.resize(n, 1);
+    iota(parent.begin(), parent.end(), 0);
+  }
+
+  int find(int x) {
+    if (parent[x] == x)
+      return x;
+    return parent[x] = find(parent[x]);
+  }
+
+  bool same(int a, int b) { return find(a) == find(b); }
+
+  bool Union(int a, int b) {
+    int roota = find(a);
+    int rootb = find(b);
+    if (roota == rootb)
+      return false;
+    if (sizes[roota] < sizes[rootb]) {
+      swap(roota, rootb);
+    }
+    parent[rootb] = roota;
+    sizes[roota] += sizes[rootb];
+    return true;
+  }
+
+  int size(int x) { return sizes[find(x)]; }
+};
+/*
+int dfs(vector<vector<int>> &g, int x, vector<bool> &vis, int cnt) {
+  vis[x] = true;
+  for (auto v : g[x]) {
+    if (vis[v]) {
+      return cnt;
+    } else {
+      return dfs(g, v, vis, cnt + 1);
+    }
+  }
+}
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
+  int n, q;
+  cin >> n >> q;
+  vector<vector<int>> g(n + 1);
+  vector<int> dp(n + 1, -1);
+  for (int i = 0; i < n; i++) {
+    int v;
+    cin >> v;
+    g[i + 1].pb(v);
+  }
+  while (q--) {
+    int s;
+    cin >> s;
+    if (dp[s] != -1) {
+      cout << dp[s] << nl;
+      continue;
+    }
+    vector<bool> vis(n + 1);
+    dp[s] = dfs(g, s, vis, 1);
+    cout << dp[s] << nl;
+  }
+}*/
+void Mizuhara() {
+  int n, m, s, t;
+  cin >> n >> m >> s >> t;
+  if (s > t)
+    swap(s, t);
+  int ans = 0;
+  for (int i = 0; i < m; i++) {
+    int p, v;
+    cin >> p >> v;
+    if (p >= s && p <= t)
+      ans += v;
+  }
   cout << ans << nl;
 }
 

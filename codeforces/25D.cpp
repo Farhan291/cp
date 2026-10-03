@@ -1,24 +1,18 @@
-// Problem: A
-// Contest: abc_439
-// URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
-// atcoder
-#include <atcoder/all>
+// Url - https://codeforces.com/contest/25/problem/D
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define vi vector<int>
 #define pii pair<int, int>
+#define vi vector<int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
-using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -55,19 +49,61 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+struct DSU {
+  vector<int> parent;
+  vector<int> sizes;
+  DSU(int n) {
+    parent.resize(n + 1);
+    sizes.resize(n + 1, 1);
+    for (int i = 1; i <= n; i++) {
+      parent[i] = i;
+    }
+  }
+  int find(int x) {
+    if (parent[x] == x)
+      return x;
+    return parent[x] = find(parent[x]);
+  }
 
+  bool merge(int a, int b) {
+    int ra = find(a);
+    int rb = find(b);
+    if (sizes[ra] < sizes[rb])
+      swap(ra, rb);
+    if (ra == rb)
+      return false;
+    parent[rb] = ra;
+    sizes[ra] += sizes[rb];
+    return true;
+  }
+};
 void Mizuhara() {
   int n;
   cin >> n;
-  int ans = (1 << n) - 2 * n;
-  cout << ans << nl;
+  int t = n - 1;
+  DSU d(n);
+  vector<pii> add;
+  vector<pii> remove;
+  while (t--) {
+    int u, v;
+    cin >> u >> v;
+    if (d.merge(u, v)) {
+      add.eb(u, v);
+    } else {
+      remove.eb(u, v);
+    }
+  }
+  for (int i = 0; i < sz(add); i++) {
+    cout << add[i].first << " " << add[i].second << " " << remove[i].first
+         << " " << remove[i].second << nl;
+  }
 }
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
   // freopen("perimeter.in","r",stdin); freopen("perimeter.out","w",stdout);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--)
     Mizuhara();
 }

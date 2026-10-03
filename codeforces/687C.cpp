@@ -1,24 +1,18 @@
-// Problem: A
-// Contest: abc_439
-// URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
-// atcoder
-#include <atcoder/all>
+// Url - https://codeforces.com/contest/687/problem/C
+// codeforces
 #include <bits/stdc++.h>
 
 #define int long long
 #define sz(x) (int)x.size()
 #define ar array
 #define all(x) x.begin(), x.end()
-#define vi vector<int>
 #define pii pair<int, int>
+#define vi vector<int>
 #define pb push_back
 #define eb emplace_back
 #define db double
 
 using namespace std;
-using namespace atcoder;
 template <typename T> void sort_unique(vector<T> &vec) {
   sort(vec.begin(), vec.end());
   vec.resize(unique(vec.begin(), vec.end()) - vec.begin());
@@ -57,10 +51,31 @@ struct _debug {
 #endif
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
+  int n, k;
+  cin >> n >> k;
+  vi v(n);
+  for (int i = 0; i < n; i++) {
+    cin >> v[i];
+  }
+  vector<bool> dp(501, false);
+  dp[0] = true;
+  for (int i = 0; i < n; i++) {
+    for (int j = k; j >= v[i]; j--) {
+      dp[j] = dp[j] | dp[j - v[i]];
+    }
+  }
+  int ans = 0;
+  vector<int> a;
+  for (int i = 0; i < 501; i++) {
+    if (dp[i]) {
+      ans++;
+      a.pb(i);
+    }
+  }
   cout << ans << nl;
+  for (auto &x : a) {
+    cout << x << " ";
+  }
 }
 
 signed main() {

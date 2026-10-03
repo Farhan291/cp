@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start:
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -55,11 +55,39 @@ struct _debug {
 #else
 #define debug(x...)
 #endif
+const int INF = 1e18;
+vector<int> pos;
+int n, s, L;
+map<pii, int> best;
+int ans = 1;
+
+void recur(int l, int r, int d) {
+  if (d > L)
+    return;
+  auto key = make_pair(l, r);
+  auto it = best.find(key);
+  if (it != best.end() && it->second <= d)
+    return;
+  best[key] = d;
+  ans = max(ans, r - l + 1);
+  if (pos[l - 1] > -INF)
+    recur(l - 1, r, d + (pos[l] - pos[l - 1]));
+  if (pos[r + 1] < INF)
+    recur(l, r + 1, d + (pos[r + 1] - pos[r]));
+}
 
 void Mizuhara() {
-  int n;
-  cin >> n;
-  int ans = (1 << n) - 2 * n;
+  cin >> n >> s >> L;
+  pos.assign(n + 2, 0);
+  pos[0] = -INF;
+  pos[1] = 0;
+  for (int i = 1; i < n; i++) {
+    int x;
+    cin >> x;
+    pos[i + 1] = pos[i] + x;
+  }
+  pos[n + 1] = INF;
+  recur(s, s, 0);
   cout << ans << nl;
 }
 

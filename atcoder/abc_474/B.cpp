@@ -1,8 +1,8 @@
-// Problem: A
-// Contest: abc_439
+// Problem:
+// Contest:
 // URL:
-// Time Limit: 100 mins
-// Start: 17:30 03-01-2026
+// Time Limit:
+// Start:
 // atcoder
 #include <atcoder/all>
 #include <bits/stdc++.h>
@@ -59,8 +59,22 @@ struct _debug {
 void Mizuhara() {
   int n;
   cin >> n;
-  int ans = (1 << n) - 2 * n;
-  cout << ans << nl;
+
+  for (int i = 0; i < n; i++) {
+
+    int p = i / 10;
+
+    int x;
+    cin >> x;
+    if (x >= (p * 10) && x < ((p + 1) * 10 + 1)) {
+      continue;
+    } else {
+      debug(x, i, p);
+      cout << "No" << nl;
+      return;
+    }
+  }
+  cout << "Yes" << nl;
 }
 
 signed main() {
